@@ -13,7 +13,7 @@ echo " + clang version: $NGX_CLANG_VER"
 have=NGX_COMPILER value="\"clang $NGX_CLANG_VER\"" . auto/define
 
 
-CC_TEST_FLAGS="-pipe"
+CC_TEST_FLAGS="$CC_TEST_FLAGS -pipe"
 
 
 # optimizations

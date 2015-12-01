@@ -29,11 +29,11 @@ ngx_spacer=
 ngx_long_regex_cont=$ngx_regex_cont
 ngx_long_cont=$ngx_cont
 
+CC_TEST_FLAGS="$CFLAGS $NGX_CC_OPT"
+
 . auto/cc/name
 
 if test -n "$CFLAGS"; then
-
-    CC_TEST_FLAGS="$CFLAGS $NGX_CC_OPT"
 
     case $NGX_CC_NAME in
 
@@ -128,8 +128,6 @@ else
         ;;
 
     esac
-
-    CC_TEST_FLAGS="$CC_TEST_FLAGS $NGX_CC_OPT"
 
 fi
 

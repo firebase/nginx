@@ -18,7 +18,7 @@ have=NGX_COMPILER value="\"gcc $NGX_GCC_VER\"" . auto/define
 
 # Solaris 7's /usr/ccs/bin/as does not support "-pipe"
 
-CC_TEST_FLAGS="-pipe"
+CC_TEST_FLAGS="$CC_TEST_FLAGS -pipe"
 
 ngx_feature="gcc -pipe switch"
 ngx_feature_name=
@@ -29,10 +29,10 @@ ngx_feature_libs=
 ngx_feature_test=
 . auto/feature
 
-CC_TEST_FLAGS=
-
 if [ $ngx_found = yes ]; then
     PIPE="-pipe"
+else
+    CC_TEST_FLAGS="$CFLAGS $NGX_CC_OPT"
 fi
 
 
