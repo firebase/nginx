@@ -50,6 +50,9 @@ extern ngx_module_t  ngx_http_static_module;
 #if (NGX_HTTP_GZIP_STATIC)
 extern ngx_module_t  ngx_http_gzip_static_module;
 #endif
+#if (NGX_HTTP_BROTLI_STATIC)
+extern ngx_module_t  ngx_http_brotli_static_module;
+#endif
 #if (NGX_HTTP_DAV)
 extern ngx_module_t  ngx_http_dav_module;
 #endif
@@ -168,6 +171,9 @@ extern ngx_module_t  ngx_http_range_header_filter_module;
 #endif
 #if (NGX_HTTP_GZIP_FILTER)
 extern ngx_module_t  ngx_http_gzip_filter_module;
+#endif
+#if (NGX_HTTP_BROTLI_FILTER)
+extern ngx_module_t  ngx_http_brotli_filter_module;
 #endif
 #if (NGX_HTTP_POSTPONE)
 extern ngx_module_t  ngx_http_postpone_filter_module;
@@ -295,6 +301,9 @@ ngx_module_t *ngx_modules[] = {
 #if (NGX_HTTP_GZIP_STATIC)
     &ngx_http_gzip_static_module,
 #endif
+#if (NGX_HTTP_BROTLI_STATIC)
+    &ngx_http_brotli_static_module,
+#endif
 #if (NGX_HTTP_DAV)
     &ngx_http_dav_module,
 #endif
@@ -413,6 +422,9 @@ ngx_module_t *ngx_modules[] = {
 #endif
 #if (NGX_HTTP_GZIP_FILTER)
     &ngx_http_gzip_filter_module,
+#endif
+#if (NGX_HTTP_BROTLI_FILTER)
+    &ngx_http_brotli_filter_module,
 #endif
 #if (NGX_HTTP_POSTPONE)
     &ngx_http_postpone_filter_module,
@@ -717,6 +729,13 @@ ngx_show_modules(void)
 #endif
 #if (NGX_ZLIB)
     ngx_write_stderr(" --with-zlib=//external:zlib");
+#endif
+
+#if (NGX_HTTP_BROTLI_FILTER)
+    ngx_write_stderr(" --add-module=//ngx_brotli:http_brotli_filter");
+#endif
+#if (NGX_HTTP_BROTLI_STATIC)
+    ngx_write_stderr(" --add-module=//ngx_brotli:http_brotli_static");
 #endif
 
     ngx_write_stderr(NGX_LINEFEED);
