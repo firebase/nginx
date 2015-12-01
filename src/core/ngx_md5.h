@@ -25,7 +25,7 @@
 typedef MD5_CTX  ngx_md5_t;
 
 
-#if (NGX_OPENSSL_MD5)
+#if (NGX_HAVE_OPENSSL_MD5_H || NGX_OPENSSL_MD5)
 
 #define ngx_md5_init    MD5_Init
 #define ngx_md5_update  MD5_Update
