@@ -13,7 +13,7 @@ END
         exit 1
     fi
 
-    have=NGX_THREADS . auto/have
+    have=NGX_THREADS . $NGX_AUTO/have
     CORE_DEPS="$CORE_DEPS $THREAD_POOL_DEPS"
     CORE_SRCS="$CORE_SRCS $THREAD_POOL_SRCS"
     CORE_LIBS="$CORE_LIBS -lpthread"

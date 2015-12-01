@@ -3,7 +3,7 @@
 # Copyright (C) Nginx, Inc.
 
 
-have=NGX_LINUX . auto/have_headers
+have=NGX_LINUX . $NGX_AUTO/have_headers
 
 CORE_INCS="$UNIX_INCS"
 CORE_DEPS="$UNIX_DEPS $LINUX_DEPS"
@@ -29,7 +29,7 @@ version=${version:-0}
 # posix_fadvise64() had been implemented in 2.5.60
 
 if [ $version -lt 132412 ]; then
-    have=NGX_HAVE_POSIX_FADVISE . auto/nohave
+    have=NGX_HAVE_POSIX_FADVISE . $NGX_AUTO/nohave
 fi
 
 # epoll, EPOLLET version
@@ -46,10 +46,10 @@ ngx_feature_test="int efd = 0;
                   ee.data.ptr = NULL;
                   efd = epoll_create(100);
                   if (efd == -1) return 1;"
-. auto/feature
+. $NGX_AUTO/feature
 
 if [ $ngx_found = yes ]; then
-    have=NGX_HAVE_CLEAR_EVENT . auto/have
+    have=NGX_HAVE_CLEAR_EVENT . $NGX_AUTO/have
     CORE_SRCS="$CORE_SRCS $EPOLL_SRCS"
     EVENT_MODULES="$EVENT_MODULES $EPOLL_MODULE"
     EVENT_FOUND=YES
@@ -68,7 +68,7 @@ if [ $ngx_found = yes ]; then
                       ee.events = EPOLLIN|EPOLLRDHUP|EPOLLET;
                       ee.data.ptr = NULL;
                       epoll_ctl(efd, EPOLL_CTL_ADD, fd, &ee)"
-    . auto/feature
+    . $NGX_AUTO/feature
 fi
 
 
@@ -85,7 +85,7 @@ ngx_feature_libs=
 ngx_feature_test="int fd; struct stat sb;
                   fd = openat(AT_FDCWD, \".\", O_PATH|O_DIRECTORY|O_NOFOLLOW);
                   if (fstatat(fd, \"\", &sb, AT_EMPTY_PATH) != 0) return 1"
-. auto/feature
+. $NGX_AUTO/feature
 
 
 # sendfile()
@@ -102,7 +102,7 @@ ngx_feature_test="int s = 0, fd = 1;
                   ssize_t n; off_t off = 0;
                   n = sendfile(s, fd, &off, 1);
                   if (n == -1 && errno == ENOSYS) return 1"
-. auto/feature
+. $NGX_AUTO/feature
 
 if [ $ngx_found = yes ]; then
     CORE_SRCS="$CORE_SRCS $LINUX_SENDFILE_SRCS"
@@ -123,10 +123,10 @@ ngx_feature_test="int s = 0, fd = 1;
                   ssize_t n; off_t off = 0;
                   n = sendfile(s, fd, &off, 1);
                   if (n == -1 && errno == ENOSYS) return 1"
-. auto/feature
+. $NGX_AUTO/feature
 
 
-ngx_include="sys/prctl.h"; . auto/include
+ngx_include="sys/prctl.h"; . $NGX_AUTO/include
 
 # prctl(PR_SET_DUMPABLE)
 
@@ -137,7 +137,7 @@ ngx_feature_incs="#include <sys/prctl.h>"
 ngx_feature_path=
 ngx_feature_libs=
 ngx_feature_test="if (prctl(PR_SET_DUMPABLE, 1, 0, 0, 0) == -1) return 1"
-. auto/feature
+. $NGX_AUTO/feature
 
 
 # sched_setaffinity()
@@ -151,7 +151,7 @@ ngx_feature_libs=
 ngx_feature_test="cpu_set_t mask;
                   CPU_ZERO(&mask);
                   sched_setaffinity(0, sizeof(cpu_set_t), &mask)"
-. auto/feature
+. $NGX_AUTO/feature
 
 
 # crypt_r()
@@ -164,10 +164,10 @@ ngx_feature_path=
 ngx_feature_libs=-lcrypt
 ngx_feature_test="struct crypt_data  cd;
                   crypt_r(\"key\", \"salt\", &cd);"
-. auto/feature
+. $NGX_AUTO/feature
 
 
-ngx_include="sys/vfs.h";     . auto/include
+ngx_include="sys/vfs.h";     . $NGX_AUTO/include
 
 
 CC_AUX_FLAGS="$cc_aux_flags -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64"

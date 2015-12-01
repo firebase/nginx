@@ -19,7 +19,7 @@
                       xmlDocPtr           doc;
                       doc = xmlParseChunk(ctxt, NULL, 0, 0);
                       xsltApplyStylesheet(sheet, doc, NULL);"
-    . auto/feature
+    . $NGX_AUTO/feature
 
 
 if [ $ngx_found = no ]; then
@@ -35,7 +35,7 @@ if [ $ngx_found = no ]; then
         ngx_feature_libs="-L/usr/local/lib -lxml2 -lxslt"
     fi
 
-    . auto/feature
+    . $NGX_AUTO/feature
 fi
 
 
@@ -52,7 +52,7 @@ if [ $ngx_found = no ]; then
         ngx_feature_libs="-L/usr/pkg/lib -lxml2 -lxslt"
     fi
 
-    . auto/feature
+    . $NGX_AUTO/feature
 fi
 
 
@@ -69,7 +69,7 @@ if [ $ngx_found = no ]; then
         ngx_feature_libs="-L/opt/local/lib -lxml2 -lxslt"
     fi
 
-    . auto/feature
+    . $NGX_AUTO/feature
 fi
 
 
@@ -98,7 +98,7 @@ fi
     ngx_feature_path="/usr/include/libxml2"
     ngx_feature_libs="-lexslt"
     ngx_feature_test="exsltRegisterAll();"
-    . auto/feature
+    . $NGX_AUTO/feature
 
 if [ $ngx_found = no ]; then
 
@@ -113,7 +113,7 @@ if [ $ngx_found = no ]; then
         ngx_feature_libs="-L/usr/local/lib -lexslt"
     fi
 
-    . auto/feature
+    . $NGX_AUTO/feature
 fi
 
 
@@ -130,7 +130,7 @@ if [ $ngx_found = no ]; then
         ngx_feature_libs="-L/usr/pkg/lib -lexslt"
     fi
 
-    . auto/feature
+    . $NGX_AUTO/feature
 fi
 
 
@@ -147,7 +147,7 @@ if [ $ngx_found = no ]; then
         ngx_feature_libs="-L/opt/local/lib -lexslt"
     fi
 
-    . auto/feature
+    . $NGX_AUTO/feature
 fi
 
 

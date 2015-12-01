@@ -4,7 +4,7 @@
 
 
 if [ $USE_PCRE = YES -o $PCRE != NONE ]; then
-    . auto/lib/pcre/conf
+    . $NGX_AUTO/lib/pcre/conf
 
 else
     if [ $USE_PCRE = DISABLED -a $HTTP_REWRITE = YES ]; then
@@ -22,20 +22,20 @@ fi
 
 
 if [ $USE_OPENSSL = YES ]; then
-    . auto/lib/openssl/conf
+    . $NGX_AUTO/lib/openssl/conf
 fi
 
 if [ $USE_MD5 = YES ]; then
 
     if [ $USE_OPENSSL = YES ]; then
-        have=NGX_HAVE_OPENSSL_MD5_H . auto/have
-        have=NGX_OPENSSL_MD5 . auto/have
-        have=NGX_HAVE_MD5 . auto/have
+        have=NGX_HAVE_OPENSSL_MD5_H . $NGX_AUTO/have
+        have=NGX_OPENSSL_MD5 . $NGX_AUTO/have
+        have=NGX_HAVE_MD5 . $NGX_AUTO/have
         MD5=YES
         MD5_LIB=OpenSSL
 
     else
-        . auto/lib/md5/conf
+        . $NGX_AUTO/lib/md5/conf
     fi
 
 fi
@@ -43,41 +43,41 @@ fi
 if [ $USE_SHA1 = YES ]; then
 
     if [ $USE_OPENSSL = YES ]; then
-        have=NGX_HAVE_OPENSSL_SHA1_H . auto/have
-        have=NGX_HAVE_SHA1 . auto/have
+        have=NGX_HAVE_OPENSSL_SHA1_H . $NGX_AUTO/have
+        have=NGX_HAVE_SHA1 . $NGX_AUTO/have
         SHA1=YES
         SHA1_LIB=OpenSSL
 
     else
-        . auto/lib/sha1/conf
+        . $NGX_AUTO/lib/sha1/conf
     fi
 
 fi
 
 if [ $USE_ZLIB = YES ]; then
-    . auto/lib/zlib/conf
+    . $NGX_AUTO/lib/zlib/conf
 fi
 
 if [ $USE_LIBXSLT = YES ]; then
-    . auto/lib/libxslt/conf
+    . $NGX_AUTO/lib/libxslt/conf
 fi
 
 if [ $USE_LIBGD = YES ]; then
-    . auto/lib/libgd/conf
+    . $NGX_AUTO/lib/libgd/conf
 fi
 
 if [ $USE_PERL = YES ]; then
-    . auto/lib/perl/conf
+    . $NGX_AUTO/lib/perl/conf
 fi
 
 if [ $HTTP_GEOIP = YES ]; then
-    . auto/lib/geoip/conf
+    . $NGX_AUTO/lib/geoip/conf
 fi
 
 if [ $NGX_GOOGLE_PERFTOOLS = YES ]; then
-    . auto/lib/google-perftools/conf
+    . $NGX_AUTO/lib/google-perftools/conf
 fi
 
 if [ $NGX_LIBATOMIC != NO ]; then
-    . auto/lib/libatomic/conf
+    . $NGX_AUTO/lib/libatomic/conf
 fi

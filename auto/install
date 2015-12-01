@@ -160,7 +160,7 @@ fi
 
 # create Makefile
 
-cat << END >> Makefile
+cat << END >> $NGX_ROOT/Makefile
 
 build:
 	\$(MAKE) -f $NGX_MAKEFILE

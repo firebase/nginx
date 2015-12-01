@@ -8,14 +8,14 @@ if [ $MD5 != NONE ]; then
     if grep MD5_Init $MD5/md5.h 2>&1 >/dev/null; then
         # OpenSSL md5
         OPENSSL_MD5=YES
-        have=NGX_HAVE_OPENSSL_MD5 . auto/have
-        have=NGX_OPENSSL_MD5 . auto/have
+        have=NGX_HAVE_OPENSSL_MD5 . $NGX_AUTO/have
+        have=NGX_OPENSSL_MD5 . $NGX_AUTO/have
     else
         # rsaref md5
         OPENSSL_MD5=NO
     fi
 
-    have=NGX_HAVE_MD5 . auto/have
+    have=NGX_HAVE_MD5 . $NGX_AUTO/have
     CORE_INCS="$CORE_INCS $MD5"
 
     case "$NGX_CC_NAME" in
@@ -59,7 +59,7 @@ else
             ngx_feature_path=
             ngx_feature_libs="-lmd"
             ngx_feature_test="MD5_CTX md5; MD5Init(&md5)"
-            . auto/feature
+            . $NGX_AUTO/feature
 
             ngx_md5_lib="system md"
 
@@ -69,7 +69,7 @@ else
 
             ngx_feature="md5 in system md5 library"
             ngx_feature_libs="-lmd5"
-            . auto/feature
+            . $NGX_AUTO/feature
 
             ngx_md5_lib="system md5"
         fi
@@ -83,13 +83,13 @@ else
             ngx_feature_incs="#include <openssl/md5.h>"
             ngx_feature_libs="-lcrypto"
             ngx_feature_test="MD5_CTX md5; MD5_Init(&md5)"
-            . auto/feature
+            . $NGX_AUTO/feature
 
             ngx_md5_lib="system crypto"
 
             if [ $ngx_found = yes ]; then
-                have=NGX_HAVE_OPENSSL_MD5_H . auto/have
-                have=NGX_HAVE_MD5 . auto/have
+                have=NGX_HAVE_OPENSSL_MD5_H . $NGX_AUTO/have
+                have=NGX_HAVE_MD5 . $NGX_AUTO/have
             fi
         fi
 

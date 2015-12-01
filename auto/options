@@ -18,7 +18,7 @@ NGX_BUILD=
 
 CC=${CC:-cc}
 CPP=
-NGX_OBJS=objs
+NGX_OBJS=$NGX_ROOT/objs
 
 NGX_DEBUG=NO
 NGX_CC_OPT=

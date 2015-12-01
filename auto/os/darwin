@@ -3,7 +3,7 @@
 # Copyright (C) Nginx, Inc.
 
 
-have=NGX_DARWIN . auto/have_headers
+have=NGX_DARWIN . $NGX_AUTO/have_headers
 
 CORE_INCS="$UNIX_INCS"
 CORE_DEPS="$UNIX_DEPS $DARWIN_DEPS"
@@ -17,8 +17,8 @@ ngx_spacer='
 # kqueue
 
 echo " + kqueue found"
-have=NGX_HAVE_KQUEUE . auto/have
-have=NGX_HAVE_CLEAR_EVENT . auto/have
+have=NGX_HAVE_KQUEUE . $NGX_AUTO/have
+have=NGX_HAVE_CLEAR_EVENT . $NGX_AUTO/have
 EVENT_MODULES="$EVENT_MODULES $KQUEUE_MODULE"
 CORE_SRCS="$CORE_SRCS $KQUEUE_SRCS"
 EVENT_FOUND=YES
@@ -51,7 +51,7 @@ ngx_feature_test="int      kq;
 
                   if (kev.flags & EV_ERROR) return 1;"
 
-. auto/feature
+. $NGX_AUTO/feature
 
 
 ngx_feature="Darwin 64-bit kqueue millisecond timeout bug"
@@ -78,7 +78,7 @@ ngx_feature_test="int  kq;
 
                   if (tv.tv_sec * 1000000 + tv.tv_usec < 900000) return 1;"
 
-. auto/feature
+. $NGX_AUTO/feature
 
 
 # sendfile()
@@ -97,7 +97,7 @@ ngx_feature_test="int s = 0, fd = 1;
                   off_t n; off_t off = 0;
                   n = sendfile(s, fd, off, &n, NULL, 0);
                   if (n == -1 && errno == ENOSYS) return 1"
-. auto/feature
+. $NGX_AUTO/feature
 
 if [ $ngx_found = yes ]; then
     CORE_SRCS="$CORE_SRCS $DARWIN_SENDFILE_SRCS"
@@ -112,4 +112,4 @@ ngx_feature_path=
 ngx_feature_libs=
 ngx_feature_test="int32_t  lock, n;
                   n = OSAtomicCompareAndSwap32Barrier(0, 1, &lock)"
-. auto/feature
+. $NGX_AUTO/feature

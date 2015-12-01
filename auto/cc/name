@@ -12,7 +12,7 @@ if [ "$NGX_PLATFORM" != win32 ]; then
     ngx_feature_path=
     ngx_feature_libs=
     ngx_feature_test=
-    . auto/feature
+    . $NGX_AUTO/feature
 
     if [ $ngx_found = no ]; then
         echo

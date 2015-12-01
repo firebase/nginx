@@ -7,9 +7,12 @@
 LC_ALL=C
 export LC_ALL
 
-. auto/options
-. auto/init
-. auto/sources
+NGX_ROOT=`dirname $0 | sed -e "s/auto$//" -e "s/\/$//" -e "s/^$/\./"`
+NGX_AUTO=$NGX_ROOT/auto
+
+. $NGX_AUTO/options
+. $NGX_AUTO/init
+. $NGX_AUTO/sources
 
 test -d $NGX_OBJS || mkdir -p $NGX_OBJS
 
@@ -20,7 +23,7 @@ echo "#define NGX_CONFIGURE \"$NGX_CONFIGURE\"" > $NGX_AUTO_CONFIG_H
 
 
 if [ $NGX_DEBUG = YES ]; then
-    have=NGX_DEBUG . auto/have
+    have=NGX_DEBUG . $NGX_AUTO/have
 fi
 
 
@@ -46,26 +49,26 @@ else
     NGX_SYSTEM=$NGX_PLATFORM
 fi
 
-. auto/cc/conf
+. $NGX_AUTO/cc/conf
 
 if [ "$NGX_PLATFORM" != win32 ]; then
-    . auto/headers
+    . $NGX_AUTO/headers
 fi
 
-. auto/os/conf
+. $NGX_AUTO/os/conf
 
 if [ "$NGX_PLATFORM" != win32 ]; then
-    . auto/unix
+    . $NGX_AUTO/unix
 fi
 
-. auto/threads
-. auto/modules
-. auto/lib/conf
+. $NGX_AUTO/threads
+. $NGX_AUTO/modules
+. $NGX_AUTO/lib/conf
 
 case ".$NGX_PREFIX" in
     .)
         NGX_PREFIX=${NGX_PREFIX:-/usr/local/nginx}
-        have=NGX_PREFIX value="\"$NGX_PREFIX/\"" . auto/define
+        have=NGX_PREFIX value="\"$NGX_PREFIX/\"" . $NGX_AUTO/define
     ;;
 
     .!)
@@ -73,44 +76,46 @@ case ".$NGX_PREFIX" in
     ;;
 
     *)
-        have=NGX_PREFIX value="\"$NGX_PREFIX/\"" . auto/define
+        have=NGX_PREFIX value="\"$NGX_PREFIX/\"" . $NGX_AUTO/define
     ;;
 esac
 
 if [ ".$NGX_CONF_PREFIX" != "." ]; then
-    have=NGX_CONF_PREFIX value="\"$NGX_CONF_PREFIX/\"" . auto/define
+    have=NGX_CONF_PREFIX value="\"$NGX_CONF_PREFIX/\"" . $NGX_AUTO/define
 fi
 
-have=NGX_SBIN_PATH value="\"$NGX_SBIN_PATH\"" . auto/define
-have=NGX_CONF_PATH value="\"$NGX_CONF_PATH\"" . auto/define
-have=NGX_PID_PATH value="\"$NGX_PID_PATH\"" . auto/define
-have=NGX_LOCK_PATH value="\"$NGX_LOCK_PATH\"" . auto/define
-have=NGX_ERROR_LOG_PATH value="\"$NGX_ERROR_LOG_PATH\"" . auto/define
+have=NGX_SBIN_PATH value="\"$NGX_SBIN_PATH\"" . $NGX_AUTO/define
+have=NGX_CONF_PATH value="\"$NGX_CONF_PATH\"" . $NGX_AUTO/define
+have=NGX_PID_PATH value="\"$NGX_PID_PATH\"" . $NGX_AUTO/define
+have=NGX_LOCK_PATH value="\"$NGX_LOCK_PATH\"" . $NGX_AUTO/define
+have=NGX_ERROR_LOG_PATH value="\"$NGX_ERROR_LOG_PATH\"" . $NGX_AUTO/define
 
-have=NGX_HTTP_LOG_PATH value="\"$NGX_HTTP_LOG_PATH\"" . auto/define
+have=NGX_HTTP_LOG_PATH value="\"$NGX_HTTP_LOG_PATH\"" . $NGX_AUTO/define
 have=NGX_HTTP_CLIENT_TEMP_PATH value="\"$NGX_HTTP_CLIENT_TEMP_PATH\""
-. auto/define
+. $NGX_AUTO/define
 have=NGX_HTTP_PROXY_TEMP_PATH value="\"$NGX_HTTP_PROXY_TEMP_PATH\""
-. auto/define
+. $NGX_AUTO/define
 have=NGX_HTTP_FASTCGI_TEMP_PATH value="\"$NGX_HTTP_FASTCGI_TEMP_PATH\""
-. auto/define
+. $NGX_AUTO/define
 have=NGX_HTTP_UWSGI_TEMP_PATH value="\"$NGX_HTTP_UWSGI_TEMP_PATH\""
-. auto/define
+. $NGX_AUTO/define
 have=NGX_HTTP_SCGI_TEMP_PATH value="\"$NGX_HTTP_SCGI_TEMP_PATH\""
-. auto/define
+. $NGX_AUTO/define
 
-. auto/make
-. auto/lib/make
-. auto/install
+if [ "$NGX_ROOT" = "." ]; then
+    . $NGX_AUTO/make
+    . $NGX_AUTO/lib/make
+    . $NGX_AUTO/install
+fi
 
 # STUB
-. auto/stubs
+. $NGX_AUTO/stubs
 
-have=NGX_USER value="\"$NGX_USER\"" . auto/define
-have=NGX_GROUP value="\"$NGX_GROUP\"" . auto/define
+have=NGX_USER value="\"$NGX_USER\"" . $NGX_AUTO/define
+have=NGX_GROUP value="\"$NGX_GROUP\"" . $NGX_AUTO/define
 
 if [ ".$NGX_BUILD" != "." ]; then
-    have=NGX_BUILD value="\"$NGX_BUILD\"" . auto/define
+    have=NGX_BUILD value="\"$NGX_BUILD\"" . $NGX_AUTO/define
 fi
 
-. auto/summary
+. $NGX_AUTO/summary

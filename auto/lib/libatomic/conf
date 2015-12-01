@@ -5,7 +5,7 @@
 
 if [ $NGX_LIBATOMIC != YES ]; then
 
-    have=NGX_HAVE_LIBATOMIC . auto/have
+    have=NGX_HAVE_LIBATOMIC . $NGX_AUTO/have
     CORE_INCS="$CORE_INCS $NGX_LIBATOMIC/src"
     LINK_DEPS="$LINK_DEPS $NGX_LIBATOMIC/src/libatomic_ops.a"
     CORE_LIBS="$CORE_LIBS $NGX_LIBATOMIC/src/libatomic_ops.a"
@@ -27,7 +27,7 @@ else
                       if (n != 2)
                           return 1;
                       AO_nop();"
-    . auto/feature
+    . $NGX_AUTO/feature
 
     if [ $ngx_found = yes ]; then
         CORE_LIBS="$CORE_LIBS $ngx_feature_libs"

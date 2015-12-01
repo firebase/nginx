@@ -13,7 +13,7 @@ NGX_GCC_VER=`$CC -v 2>&1 | grep 'gcc version' 2>&1 \
 
 echo " + gcc version: $NGX_GCC_VER"
 
-have=NGX_COMPILER value="\"gcc $NGX_GCC_VER\"" . auto/define
+have=NGX_COMPILER value="\"gcc $NGX_GCC_VER\"" . $NGX_AUTO/define
 
 
 # Solaris 7's /usr/ccs/bin/as does not support "-pipe"
@@ -27,7 +27,7 @@ ngx_feature_incs=
 ngx_feature_path=
 ngx_feature_libs=
 ngx_feature_test=
-. auto/feature
+. $NGX_AUTO/feature
 
 if [ $ngx_found = yes ]; then
     PIPE="-pipe"

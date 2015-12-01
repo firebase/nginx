@@ -3,7 +3,7 @@
 # Copyright (C) Nginx, Inc.
 
 
-have=NGX_SOLARIS . auto/have_headers
+have=NGX_SOLARIS . $NGX_AUTO/have_headers
 
 CORE_INCS="$UNIX_INCS"
 CORE_DEPS="$UNIX_DEPS $SOLARIS_DEPS"
@@ -37,7 +37,7 @@ ngx_feature_test="int fd = 1; sendfilevec_t vec[1];
                   size_t sent; ssize_t n;
                   n = sendfilev(fd, vec, 1, &sent);
                   if (n == -1) return 1"
-. auto/feature
+. $NGX_AUTO/feature
 
 
 if [ $ngx_found = yes ]; then
@@ -53,7 +53,7 @@ ngx_feature_incs="#include <port.h>"
 ngx_feature_path=
 ngx_feature_libs=
 ngx_feature_test="int n = port_create()"
-. auto/feature
+. $NGX_AUTO/feature
 
 if [ $ngx_found = yes ]; then
     CORE_SRCS="$CORE_SRCS $EVENTPORT_SRCS"

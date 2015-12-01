@@ -8,33 +8,33 @@ echo "checking for $NGX_SYSTEM specific features"
 case "$NGX_PLATFORM" in
 
     FreeBSD:*)
-        . auto/os/freebsd
+        . $NGX_AUTO/os/freebsd
     ;;
 
     Linux:*)
-        . auto/os/linux
+        . $NGX_AUTO/os/linux
     ;;
 
     SunOS:*)
-        . auto/os/solaris
+        . $NGX_AUTO/os/solaris
     ;;
 
     Darwin:*)
-        . auto/os/darwin
+        . $NGX_AUTO/os/darwin
     ;;
 
     win32)
-        . auto/os/win32
+        . $NGX_AUTO/os/win32
     ;;
 
     DragonFly:*)
-        have=NGX_FREEBSD . auto/have_headers
+        have=NGX_FREEBSD . $NGX_AUTO/have_headers
         CORE_INCS="$UNIX_INCS"
         CORE_DEPS="$UNIX_DEPS $FREEBSD_DEPS"
         CORE_SRCS="$UNIX_SRCS $FREEBSD_SRCS"
 
         echo " + sendfile() found"
-        have=NGX_HAVE_SENDFILE . auto/have
+        have=NGX_HAVE_SENDFILE . $NGX_AUTO/have
         CORE_SRCS="$CORE_SRCS $FREEBSD_SENDFILE_SRCS"
 
         ngx_spacer='
@@ -43,7 +43,7 @@ case "$NGX_PLATFORM" in
 
     HP-UX:*)
         # HP/UX
-        have=NGX_HPUX . auto/have_headers
+        have=NGX_HPUX . $NGX_AUTO/have_headers
         CORE_INCS="$UNIX_INCS"
         CORE_DEPS="$UNIX_DEPS $POSIX_DEPS"
         CORE_SRCS="$UNIX_SRCS"
@@ -53,8 +53,8 @@ case "$NGX_PLATFORM" in
 
     OSF1:*)
         # Tru64 UNIX
-        have=NGX_TRU64 . auto/have_headers
-        have=NGX_HAVE_STRERROR_R . auto/nohave
+        have=NGX_TRU64 . $NGX_AUTO/have_headers
+        have=NGX_HAVE_STRERROR_R . $NGX_AUTO/nohave
         CORE_INCS="$UNIX_INCS"
         CORE_DEPS="$UNIX_DEPS $POSIX_DEPS"
         CORE_SRCS="$UNIX_SRCS"
@@ -62,7 +62,7 @@ case "$NGX_PLATFORM" in
 
     GNU:*)
         # GNU Hurd
-        have=NGX_GNU_HURD . auto/have_headers
+        have=NGX_GNU_HURD . $NGX_AUTO/have_headers
         CORE_INCS="$UNIX_INCS"
         CORE_DEPS="$UNIX_DEPS $POSIX_DEPS"
         CORE_SRCS="$UNIX_SRCS"
@@ -81,29 +81,29 @@ esac
 case "$NGX_MACHINE" in
 
     i386 | i686 | i86pc)
-        have=NGX_HAVE_NONALIGNED . auto/have
+        have=NGX_HAVE_NONALIGNED . $NGX_AUTO/have
         NGX_MACH_CACHE_LINE=32
     ;;
 
     amd64 | x86_64)
-        have=NGX_HAVE_NONALIGNED . auto/have
+        have=NGX_HAVE_NONALIGNED . $NGX_AUTO/have
         NGX_MACH_CACHE_LINE=64
     ;;
 
     sun4u | sun4v | sparc | sparc64)
-        have=NGX_ALIGNMENT value=16 . auto/define
+        have=NGX_ALIGNMENT value=16 . $NGX_AUTO/define
         # TODO
         NGX_MACH_CACHE_LINE=64
     ;;
 
     ia64 )
-        have=NGX_ALIGNMENT value=16 . auto/define
+        have=NGX_ALIGNMENT value=16 . $NGX_AUTO/define
         # TODO
         NGX_MACH_CACHE_LINE=64
     ;;
 
     *)
-        have=NGX_ALIGNMENT value=16 . auto/define
+        have=NGX_ALIGNMENT value=16 . $NGX_AUTO/define
         NGX_MACH_CACHE_LINE=32
     ;;
 
@@ -113,4 +113,4 @@ if test -z "$NGX_CPU_CACHE_LINE"; then
     NGX_CPU_CACHE_LINE=$NGX_MACH_CACHE_LINE
 fi
 
-have=NGX_CPU_CACHE_LINE value=$NGX_CPU_CACHE_LINE . auto/define
+have=NGX_CPU_CACHE_LINE value=$NGX_CPU_CACHE_LINE . $NGX_AUTO/define

@@ -8,8 +8,8 @@ if [ $OPENSSL != NONE ]; then
     case "$CC" in
 
         cl | bcc32)
-            have=NGX_OPENSSL . auto/have
-            have=NGX_SSL . auto/have
+            have=NGX_OPENSSL . $NGX_AUTO/have
+            have=NGX_SSL . $NGX_AUTO/have
 
             CFLAGS="$CFLAGS -DNO_SYS_TYPES_H"
 
@@ -25,8 +25,8 @@ if [ $OPENSSL != NONE ]; then
         ;;
 
         *)
-            have=NGX_OPENSSL . auto/have
-            have=NGX_SSL . auto/have
+            have=NGX_OPENSSL . $NGX_AUTO/have
+            have=NGX_SSL . $NGX_AUTO/have
 
             CORE_INCS="$CORE_INCS $OPENSSL/.openssl/include"
             CORE_DEPS="$CORE_DEPS $OPENSSL/.openssl/include/openssl/ssl.h"
@@ -53,7 +53,7 @@ else
         ngx_feature_path=
         ngx_feature_libs="-lssl -lcrypto"
         ngx_feature_test="SSL_library_init()"
-        . auto/feature
+        . $NGX_AUTO/feature
 
         if [ $ngx_found = no ]; then
 
@@ -68,7 +68,7 @@ else
                 ngx_feature_libs="-L/usr/local/lib -lssl -lcrypto"
             fi
 
-            . auto/feature
+            . $NGX_AUTO/feature
         fi
 
         if [ $ngx_found = no ]; then
@@ -84,7 +84,7 @@ else
                 ngx_feature_libs="-L/usr/pkg/lib -lssl -lcrypto"
             fi
 
-            . auto/feature
+            . $NGX_AUTO/feature
         fi
 
         if [ $ngx_found = no ]; then
@@ -100,11 +100,11 @@ else
                 ngx_feature_libs="-L/opt/local/lib -lssl -lcrypto"
             fi
 
-            . auto/feature
+            . $NGX_AUTO/feature
         fi
 
         if [ $ngx_found = yes ]; then
-            have=NGX_SSL . auto/have
+            have=NGX_SSL . $NGX_AUTO/have
             CORE_LIBS="$CORE_LIBS $ngx_feature_libs $NGX_LIBDL"
             OPENSSL=YES
         fi

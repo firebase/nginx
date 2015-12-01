@@ -9,15 +9,15 @@ if [ $PCRE != NONE ]; then
     case "$NGX_CC_NAME" in
 
         msvc* | owc* | bcc)
-            have=NGX_PCRE . auto/have
-            have=PCRE_STATIC . auto/have
+            have=NGX_PCRE . $NGX_AUTO/have
+            have=PCRE_STATIC . $NGX_AUTO/have
             CORE_DEPS="$CORE_DEPS $PCRE/pcre.h"
             LINK_DEPS="$LINK_DEPS $PCRE/pcre.lib"
             CORE_LIBS="$CORE_LIBS $PCRE/pcre.lib"
         ;;
 
         icc* )
-            have=NGX_PCRE . auto/have
+            have=NGX_PCRE . $NGX_AUTO/have
             CORE_DEPS="$CORE_DEPS $PCRE/pcre.h"
 
             LINK_DEPS="$LINK_DEPS $PCRE/.libs/libpcre.a"
@@ -72,10 +72,10 @@ if [ $PCRE != NONE ]; then
         ;;
 
         *)
-            have=NGX_PCRE . auto/have
+            have=NGX_PCRE . $NGX_AUTO/have
 
             if [ "$NGX_PLATFORM" = win32 ]; then
-                have=PCRE_STATIC . auto/have
+                have=PCRE_STATIC . $NGX_AUTO/have
             fi
 
             CORE_DEPS="$CORE_DEPS $PCRE/pcre.h"
@@ -87,7 +87,7 @@ if [ $PCRE != NONE ]; then
 
 
     if [ $PCRE_JIT = YES ]; then
-        have=NGX_HAVE_PCRE_JIT . auto/have
+        have=NGX_HAVE_PCRE_JIT . $NGX_AUTO/have
         PCRE_CONF_OPT="$PCRE_CONF_OPT --enable-jit"
     fi
 
@@ -106,7 +106,7 @@ else
         ngx_feature_test="pcre *re;
                           re = pcre_compile(NULL, 0, NULL, 0, NULL);
                           if (re == NULL) return 1"
-        . auto/feature
+        . $NGX_AUTO/feature
 
         if [ $ngx_found = no ]; then
 
@@ -121,7 +121,7 @@ else
                 ngx_feature_libs="-L/usr/local/lib -lpcre"
             fi
 
-            . auto/feature
+            . $NGX_AUTO/feature
         fi
 
         if [ $ngx_found = no ]; then
@@ -132,7 +132,7 @@ else
             ngx_feature_path="/usr/include/pcre"
             ngx_feature_libs="-lpcre"
 
-            . auto/feature
+            . $NGX_AUTO/feature
         fi
 
         if [ $ngx_found = no ]; then
@@ -148,7 +148,7 @@ else
                 ngx_feature_libs="-L/usr/pkg/lib -lpcre"
             fi
 
-            . auto/feature
+            . $NGX_AUTO/feature
         fi
 
         if [ $ngx_found = no ]; then
@@ -164,7 +164,7 @@ else
                 ngx_feature_libs="-L/opt/local/lib -lpcre"
             fi
 
-            . auto/feature
+            . $NGX_AUTO/feature
         fi
 
         if [ $ngx_found = yes ]; then
@@ -180,7 +180,7 @@ else
                               pcre_free_study(NULL);
                               pcre_config(PCRE_CONFIG_JIT, &jit);
                               if (jit != 1) return 1;"
-            . auto/feature
+            . $NGX_AUTO/feature
 
             if [ $ngx_found = yes ]; then
                 PCRE_JIT=YES

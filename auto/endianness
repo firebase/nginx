@@ -34,7 +34,7 @@ eval "$ngx_test >> $NGX_AUTOCONF_ERR 2>&1"
 if [ -x $NGX_AUTOTEST ]; then
     if $NGX_AUTOTEST >/dev/null 2>&1; then
         echo " little endian"
-        have=NGX_HAVE_LITTLE_ENDIAN . auto/have
+        have=NGX_HAVE_LITTLE_ENDIAN . $NGX_AUTO/have
     else
         echo " big endian"
     fi

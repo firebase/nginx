@@ -10,7 +10,7 @@
     ngx_feature_path=
     ngx_feature_libs="-lgd"
     ngx_feature_test="gdImagePtr img = gdImageCreateFromGifPtr(1, NULL);"
-    . auto/feature
+    . $NGX_AUTO/feature
 
 
 if [ $ngx_found = no ]; then
@@ -26,7 +26,7 @@ if [ $ngx_found = no ]; then
         ngx_feature_libs="-L/usr/local/lib -lgd"
     fi
 
-    . auto/feature
+    . $NGX_AUTO/feature
 fi
 
 
@@ -43,7 +43,7 @@ if [ $ngx_found = no ]; then
         ngx_feature_libs="-L/usr/pkg/lib -lgd"
     fi
 
-    . auto/feature
+    . $NGX_AUTO/feature
 fi
 
 
@@ -60,7 +60,7 @@ if [ $ngx_found = no ]; then
         ngx_feature_libs="-L/opt/local/lib -lgd"
     fi
 
-    . auto/feature
+    . $NGX_AUTO/feature
 fi
 
 

@@ -8,7 +8,7 @@ if [ $EVENT_SELECT = NO -a $EVENT_FOUND = NO ]; then
 fi
 
 if [ $EVENT_SELECT = YES ]; then
-    have=NGX_HAVE_SELECT . auto/have
+    have=NGX_HAVE_SELECT . $NGX_AUTO/have
     CORE_SRCS="$CORE_SRCS $SELECT_SRCS"
     EVENT_MODULES="$EVENT_MODULES $SELECT_MODULE"
 fi
@@ -19,51 +19,51 @@ if [ $EVENT_POLL = NO -a $EVENT_FOUND = NO ]; then
 fi
 
 if [ $EVENT_POLL = YES ]; then
-    have=NGX_HAVE_POLL . auto/have
+    have=NGX_HAVE_POLL . $NGX_AUTO/have
     CORE_SRCS="$CORE_SRCS $POLL_SRCS"
     EVENT_MODULES="$EVENT_MODULES $POLL_MODULE"
 fi
 
 
 if [ $NGX_TEST_BUILD_DEVPOLL = YES ]; then
-    have=NGX_HAVE_DEVPOLL . auto/have
-    have=NGX_TEST_BUILD_DEVPOLL . auto/have
+    have=NGX_HAVE_DEVPOLL . $NGX_AUTO/have
+    have=NGX_TEST_BUILD_DEVPOLL . $NGX_AUTO/have
     EVENT_MODULES="$EVENT_MODULES $DEVPOLL_MODULE"
     CORE_SRCS="$CORE_SRCS $DEVPOLL_SRCS"
 fi
 
 
 if [ $NGX_TEST_BUILD_EVENTPORT = YES ]; then
-    have=NGX_HAVE_EVENTPORT . auto/have
-    have=NGX_TEST_BUILD_EVENTPORT . auto/have
+    have=NGX_HAVE_EVENTPORT . $NGX_AUTO/have
+    have=NGX_TEST_BUILD_EVENTPORT . $NGX_AUTO/have
     EVENT_MODULES="$EVENT_MODULES $EVENTPORT_MODULE"
     CORE_SRCS="$CORE_SRCS $EVENTPORT_SRCS"
 fi
 
 if [ $NGX_TEST_BUILD_EPOLL = YES ]; then
-    have=NGX_HAVE_EPOLL . auto/have
-    have=NGX_HAVE_EPOLLRDHUP . auto/have
-    have=NGX_HAVE_EVENTFD . auto/have
-    have=NGX_TEST_BUILD_EPOLL . auto/have
+    have=NGX_HAVE_EPOLL . $NGX_AUTO/have
+    have=NGX_HAVE_EPOLLRDHUP . $NGX_AUTO/have
+    have=NGX_HAVE_EVENTFD . $NGX_AUTO/have
+    have=NGX_TEST_BUILD_EPOLL . $NGX_AUTO/have
     EVENT_MODULES="$EVENT_MODULES $EPOLL_MODULE"
     CORE_SRCS="$CORE_SRCS $EPOLL_SRCS"
 fi
 
 if [ $NGX_TEST_BUILD_SOLARIS_SENDFILEV = YES ]; then
-    have=NGX_TEST_BUILD_SOLARIS_SENDFILEV . auto/have
+    have=NGX_TEST_BUILD_SOLARIS_SENDFILEV . $NGX_AUTO/have
     CORE_SRCS="$CORE_SRCS $SOLARIS_SENDFILEV_SRCS"
 fi
 
 
 if [ $HTTP != YES ]; then
-    have=NGX_CRYPT . auto/nohave
+    have=NGX_CRYPT . $NGX_AUTO/nohave
     CRYPT_LIB=
 fi
 
 
 if [ $HTTP_CACHE = YES ]; then
     USE_MD5=YES
-    have=NGX_HTTP_CACHE . auto/have
+    have=NGX_HTTP_CACHE . $NGX_AUTO/have
     HTTP_SRCS="$HTTP_SRCS $HTTP_FILE_CACHE_SRCS"
 fi
 
@@ -122,7 +122,7 @@ fi
 HTTP_FILTER_MODULES="$HTTP_FILTER_MODULES $HTTP_RANGE_HEADER_FILTER_MODULE"
 
 if [ $HTTP_GZIP = YES ]; then
-    have=NGX_HTTP_GZIP . auto/have
+    have=NGX_HTTP_GZIP . $NGX_AUTO/have
     USE_ZLIB=YES
     HTTP_FILTER_MODULES="$HTTP_FILTER_MODULES $HTTP_GZIP_FILTER_MODULE"
     HTTP_SRCS="$HTTP_SRCS $HTTP_GZIP_SRCS"
@@ -134,7 +134,7 @@ if [ $HTTP_POSTPONE = YES ]; then
 fi
 
 if [ $HTTP_SSI = YES ]; then
-    have=NGX_HTTP_SSI . auto/have
+    have=NGX_HTTP_SSI . $NGX_AUTO/have
     HTTP_FILTER_MODULES="$HTTP_FILTER_MODULES $HTTP_SSI_FILTER_MODULE"
     HTTP_DEPS="$HTTP_DEPS $HTTP_SSI_DEPS"
     HTTP_SRCS="$HTTP_SRCS $HTTP_SSI_SRCS"
@@ -168,7 +168,7 @@ if [ $HTTP_ADDITION = YES ]; then
 fi
 
 if [ $HTTP_GUNZIP = YES ]; then
-    have=NGX_HTTP_GZIP . auto/have
+    have=NGX_HTTP_GZIP . $NGX_AUTO/have
     USE_ZLIB=YES
     HTTP_FILTER_MODULES="$HTTP_FILTER_MODULES $HTTP_GUNZIP_FILTER_MODULE"
     HTTP_SRCS="$HTTP_SRCS $HTTP_GUNZIP_SRCS"
@@ -181,7 +181,7 @@ fi
 
 
 if [ $HTTP_V2 = YES ]; then
-    have=NGX_HTTP_V2 . auto/have
+    have=NGX_HTTP_V2 . $NGX_AUTO/have
     HTTP_MODULES="$HTTP_MODULES $HTTP_V2_MODULE"
     HTTP_INCS="$HTTP_INCS $HTTP_V2_INCS"
     HTTP_DEPS="$HTTP_DEPS $HTTP_V2_DEPS"
@@ -191,13 +191,13 @@ fi
 HTTP_MODULES="$HTTP_MODULES $HTTP_STATIC_MODULE"
 
 if [ $HTTP_GZIP_STATIC = YES ]; then
-    have=NGX_HTTP_GZIP . auto/have
+    have=NGX_HTTP_GZIP . $NGX_AUTO/have
     HTTP_MODULES="$HTTP_MODULES $HTTP_GZIP_STATIC_MODULE"
     HTTP_SRCS="$HTTP_SRCS $HTTP_GZIP_STATIC_SRCS"
 fi
 
 if [ $HTTP_DAV = YES ]; then
-    have=NGX_HTTP_DAV . auto/have
+    have=NGX_HTTP_DAV . $NGX_AUTO/have
     HTTP_MODULES="$HTTP_MODULES $HTTP_DAV_MODULE"
     HTTP_SRCS="$HTTP_SRCS $HTTP_DAV_SRCS"
 fi
@@ -222,7 +222,7 @@ fi
 if [ $HTTP_AUTH_BASIC = YES ]; then
     USE_MD5=YES
     USE_SHA1=YES
-    have=NGX_CRYPT . auto/have
+    have=NGX_CRYPT . $NGX_AUTO/have
     HTTP_MODULES="$HTTP_MODULES $HTTP_AUTH_BASIC_MODULE"
     HTTP_SRCS="$HTTP_SRCS $HTTP_AUTH_BASIC_SRCS"
     CORE_LIBS="$CORE_LIBS $CRYPT_LIB"
@@ -244,8 +244,8 @@ if [ $HTTP_LIMIT_REQ = YES ]; then
 fi
 
 if [ $HTTP_REALIP = YES ]; then
-    have=NGX_HTTP_REALIP . auto/have
-    have=NGX_HTTP_X_FORWARDED_FOR . auto/have
+    have=NGX_HTTP_REALIP . $NGX_AUTO/have
+    have=NGX_HTTP_X_FORWARDED_FOR . $NGX_AUTO/have
     HTTP_MODULES="$HTTP_MODULES $HTTP_REALIP_MODULE"
     HTTP_SRCS="$HTTP_SRCS $HTTP_REALIP_SRCS"
 fi
@@ -256,13 +256,13 @@ if [ $HTTP_STATUS = YES ]; then
 fi
 
 if [ $HTTP_GEO = YES ]; then
-    have=NGX_HTTP_X_FORWARDED_FOR . auto/have
+    have=NGX_HTTP_X_FORWARDED_FOR . $NGX_AUTO/have
     HTTP_MODULES="$HTTP_MODULES $HTTP_GEO_MODULE"
     HTTP_SRCS="$HTTP_SRCS $HTTP_GEO_SRCS"
 fi
 
 if [ $HTTP_GEOIP = YES ]; then
-    have=NGX_HTTP_X_FORWARDED_FOR . auto/have
+    have=NGX_HTTP_X_FORWARDED_FOR . $NGX_AUTO/have
     HTTP_MODULES="$HTTP_MODULES $HTTP_GEOIP_MODULE"
     HTTP_SRCS="$HTTP_SRCS $HTTP_GEOIP_SRCS"
 fi
@@ -290,14 +290,14 @@ fi
 
 if [ $HTTP_SSL = YES ]; then
     USE_OPENSSL=YES
-    have=NGX_HTTP_SSL . auto/have
+    have=NGX_HTTP_SSL . $NGX_AUTO/have
     HTTP_MODULES="$HTTP_MODULES $HTTP_SSL_MODULE"
     HTTP_DEPS="$HTTP_DEPS $HTTP_SSL_DEPS"
     HTTP_SRCS="$HTTP_SRCS $HTTP_SSL_SRCS"
 fi
 
 if [ $HTTP_PROXY = YES ]; then
-    have=NGX_HTTP_X_FORWARDED_FOR . auto/have
+    have=NGX_HTTP_X_FORWARDED_FOR . $NGX_AUTO/have
     #USE_MD5=YES
     HTTP_MODULES="$HTTP_MODULES $HTTP_PROXY_MODULE"
     HTTP_DEPS="$HTTP_DEPS $HTTP_PROXY_DEPS"
@@ -349,7 +349,7 @@ if [ $HTTP_SECURE_LINK = YES ]; then
 fi
 
 if [ $HTTP_DEGRADATION = YES ]; then
-    have=NGX_HTTP_DEGRADATION . auto/have
+    have=NGX_HTTP_DEGRADATION . $NGX_AUTO/have
     HTTP_MODULES="$HTTP_MODULES $HTTP_DEGRADATION_MODULE"
     HTTP_SRCS="$HTTP_SRCS $HTTP_DEGRADATION_SRCS"
 fi
@@ -385,13 +385,13 @@ if [ $HTTP_UPSTREAM_KEEPALIVE = YES ]; then
 fi
 
 if [ $HTTP_UPSTREAM_ZONE = YES ]; then
-    have=NGX_HTTP_UPSTREAM_ZONE . auto/have
+    have=NGX_HTTP_UPSTREAM_ZONE . $NGX_AUTO/have
     HTTP_MODULES="$HTTP_MODULES $HTTP_UPSTREAM_ZONE_MODULE"
     HTTP_SRCS="$HTTP_SRCS $HTTP_UPSTREAM_ZONE_SRCS"
 fi
 
 if [ $HTTP_STUB_STATUS = YES ]; then
-    have=NGX_STAT_STUB . auto/have
+    have=NGX_STAT_STUB . $NGX_AUTO/have
     HTTP_MODULES="$HTTP_MODULES ngx_http_stub_status_module"
     HTTP_SRCS="$HTTP_SRCS src/http/modules/ngx_http_stub_status_module.c"
 fi
@@ -423,13 +423,13 @@ fi
 
 
 if [ $MAIL_SSL = YES ]; then
-    have=NGX_MAIL_SSL . auto/have
+    have=NGX_MAIL_SSL . $NGX_AUTO/have
     USE_OPENSSL=YES
 fi
 
 
 if [ $STREAM_SSL = YES ]; then
-    have=NGX_STREAM_SSL . auto/have
+    have=NGX_STREAM_SSL . $NGX_AUTO/have
     USE_OPENSSL=YES
 fi
 
@@ -505,7 +505,7 @@ fi
 
 
 if [ $STREAM = YES ]; then
-    have=NGX_STREAM . auto/have
+    have=NGX_STREAM . $NGX_AUTO/have
     modules="$modules $STREAM_MODULES"
 
     if [ $STREAM_SSL = YES ]; then
@@ -535,7 +535,7 @@ if [ $STREAM = YES ]; then
     fi
 
     if [ $STREAM_UPSTREAM_ZONE = YES ]; then
-        have=NGX_STREAM_UPSTREAM_ZONE . auto/have
+        have=NGX_STREAM_UPSTREAM_ZONE . $NGX_AUTO/have
         modules="$modules $STREAM_UPSTREAM_ZONE_MODULE"
         STREAM_SRCS="$STREAM_SRCS $STREAM_UPSTREAM_ZONE_SRCS"
     fi

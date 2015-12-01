@@ -3,7 +3,7 @@
 # Copyright (C) Nginx, Inc.
 
 
-have=NGX_FREEBSD . auto/have_headers
+have=NGX_FREEBSD . $NGX_AUTO/have_headers
 
 CORE_INCS="$UNIX_INCS"
 CORE_DEPS="$UNIX_DEPS $FREEBSD_DEPS"
@@ -40,7 +40,7 @@ fi
 if [ $osreldate -gt 300007 ]; then
     echo " + sendfile() found"
 
-    have=NGX_HAVE_SENDFILE . auto/have
+    have=NGX_HAVE_SENDFILE . $NGX_AUTO/have
     CORE_SRCS="$CORE_SRCS $FREEBSD_SENDFILE_SRCS"
 fi
 
@@ -48,7 +48,7 @@ if [ $NGX_FILE_AIO = YES ]; then
     if [ $osreldate -gt 502103 ]; then
         echo " + sendfile()'s SF_NODISKIO found"
 
-        have=NGX_HAVE_AIO_SENDFILE . auto/have
+        have=NGX_HAVE_AIO_SENDFILE . $NGX_AUTO/have
     fi
 fi
 
@@ -58,7 +58,7 @@ fi
 if [ $osreldate -ge 701106 ]; then
     echo " + POSIX semaphores should work"
 else
-    have=NGX_HAVE_POSIX_SEM . auto/nohave
+    have=NGX_HAVE_POSIX_SEM . $NGX_AUTO/nohave
 fi
 
 
@@ -69,8 +69,8 @@ if [ \( $osreldate -lt 500000 -a $osreldate -ge 410000 \) \
 then
     echo " + kqueue found"
 
-    have=NGX_HAVE_KQUEUE . auto/have
-    have=NGX_HAVE_CLEAR_EVENT . auto/have
+    have=NGX_HAVE_KQUEUE . $NGX_AUTO/have
+    have=NGX_HAVE_CLEAR_EVENT . $NGX_AUTO/have
     EVENT_MODULES="$EVENT_MODULES $KQUEUE_MODULE"
     CORE_SRCS="$CORE_SRCS $KQUEUE_SRCS"
     EVENT_FOUND=YES
@@ -86,7 +86,7 @@ if [ \( $version -lt 500000 -a $version -ge 430000 \) \
      -o $version -ge 500018 ]
 then
     echo " + kqueue's NOTE_LOWAT found"
-    have=NGX_HAVE_LOWAT_EVENT . auto/have
+    have=NGX_HAVE_LOWAT_EVENT . $NGX_AUTO/have
 fi
 
 # kqueue's EVFILT_TIMER
@@ -95,7 +95,7 @@ if [ \( $version -lt 500000 -a $version -ge 440001 \) \
      -o $version -ge 500023 ]
 then
     echo " + kqueue's EVFILT_TIMER found"
-    have=NGX_HAVE_TIMER_EVENT . auto/have
+    have=NGX_HAVE_TIMER_EVENT . $NGX_AUTO/have
 fi
 
 
@@ -103,5 +103,5 @@ fi
 
 if [ $version -ge 701000 ]; then
     echo " + cpuset_setaffinity() found"
-    have=NGX_HAVE_CPUSET_SETAFFINITY . auto/have
+    have=NGX_HAVE_CPUSET_SETAFFINITY . $NGX_AUTO/have
 fi

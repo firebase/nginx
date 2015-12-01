@@ -100,7 +100,7 @@ fi
 
 # MSVC 2005 supports C99 variadic macros
 if [ $NGX_CC_NAME = msvc8 ]; then
-   have=NGX_HAVE_C99_VARIADIC_MACROS . auto/have
+   have=NGX_HAVE_C99_VARIADIC_MACROS . $NGX_AUTO/have
 fi
 
 

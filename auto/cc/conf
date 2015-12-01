@@ -31,7 +31,7 @@ ngx_long_cont=$ngx_cont
 
 CC_TEST_FLAGS="$CFLAGS $NGX_CC_OPT"
 
-. auto/cc/name
+. $NGX_AUTO/cc/name
 
 if test -n "$CFLAGS"; then
 
@@ -76,55 +76,55 @@ else
             #     3.0.4, 3.1.1, 3.2.3, 3.3.2, 3.3.3, 3.3.4, 3.4.0, 3.4.2
             #     4.0.0, 4.0.1, 4.1.0
 
-            . auto/cc/gcc
+            . $NGX_AUTO/cc/gcc
         ;;
 
         clang)
             # Clang C compiler
 
-            . auto/cc/clang
+            . $NGX_AUTO/cc/clang
         ;;
 
         icc)
             # Intel C++ compiler 7.1, 8.0, 8.1
 
-            . auto/cc/icc
+            . $NGX_AUTO/cc/icc
         ;;
 
         sunc)
             # Sun C 5.7 Patch 117837-04 2005/05/11
 
-            . auto/cc/sunc
+            . $NGX_AUTO/cc/sunc
         ;;
 
         ccc)
             # Compaq C V6.5-207
 
-            . auto/cc/ccc
+            . $NGX_AUTO/cc/ccc
         ;;
 
         acc)
             # aCC: HP ANSI C++ B3910B A.03.55.02
 
-            . auto/cc/acc
+            . $NGX_AUTO/cc/acc
         ;;
 
         msvc*)
             # MSVC++ 6.0 SP2, MSVC++ Toolkit 2003
 
-            . auto/cc/msvc
+            . $NGX_AUTO/cc/msvc
         ;;
 
         owc)
             # Open Watcom C 1.0, 1.2
 
-            . auto/cc/owc
+            . $NGX_AUTO/cc/owc
         ;;
 
         bcc)
             # Borland C++ 5.5
 
-            . auto/cc/bcc
+            . $NGX_AUTO/cc/bcc
         ;;
 
     esac
@@ -144,7 +144,7 @@ if [ "$NGX_PLATFORM" != win32 ]; then
         ngx_feature_path=
         ngx_feature_libs=
         ngx_feature_test=
-        . auto/feature
+        . $NGX_AUTO/feature
 
         if [ $ngx_found = no ]; then
             echo $0: error: the invalid value in --with-ld-opt=\"$NGX_LD_OPT\"
@@ -168,7 +168,7 @@ if [ "$NGX_PLATFORM" != win32 ]; then
                       if (n != 2)
                           return 1;
                       __sync_synchronize();"
-    . auto/feature
+    . $NGX_AUTO/feature
 
 
     if [ "$NGX_CC_NAME" = "ccc" ]; then
@@ -184,7 +184,7 @@ if [ "$NGX_PLATFORM" != win32 ]; then
         ngx_feature_test="char  buf[30]; buf[0] = '0';
                           var(0, buf, \"%d\", 1);
                           if (buf[0] != '1') return 1"
-        . auto/feature
+        . $NGX_AUTO/feature
      fi
 
 
@@ -198,7 +198,7 @@ if [ "$NGX_PLATFORM" != win32 ]; then
     ngx_feature_test="char  buf[30]; buf[0] = '0';
                       var(0, buf, \"%d\", 1);
                       if (buf[0] != '1') return 1"
-    . auto/feature
+    . $NGX_AUTO/feature
 
 
 #    ngx_feature="inline"
@@ -208,7 +208,7 @@ if [ "$NGX_PLATFORM" != win32 ]; then
 #    ngx_feature_path=
 #    ngx_feature_libs=
 #    ngx_feature_test=
-#    . auto/feature
+#    . $NGX_AUTO/feature
 #
 #    if [ $ngx_found = yes ]; then
 #    fi

@@ -45,7 +45,7 @@ if test -n "$NGX_PERL_VER"; then
     ngx_perl_module="$ngx_perl_libdir/nginx/nginx.$ngx_perl_dlext"
 
     if $NGX_PERL -V:usemultiplicity | grep define > /dev/null; then
-        have=NGX_HAVE_PERL_MULTIPLICITY . auto/have
+        have=NGX_HAVE_PERL_MULTIPLICITY . $NGX_AUTO/have
         echo " + perl interpreter multiplicity found"
     fi
 
@@ -65,7 +65,7 @@ if test -n "$NGX_PERL_VER"; then
 
     if test -n "$NGX_PERL_MODULES"; then
         have=NGX_PERL_MODULES value="(u_char *) \"$NGX_PERL_MODULES\""
-        . auto/define
+        . $NGX_AUTO/define
         NGX_PERL_MODULES_MAN=$NGX_PERL_MODULES/man3
     fi
 

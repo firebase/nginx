@@ -5,7 +5,7 @@
 
 if [ $SHA1 != NONE ]; then
 
-    have=NGX_HAVE_SHA1 . auto/have
+    have=NGX_HAVE_SHA1 . $NGX_AUTO/have
     CORE_INCS="$CORE_INCS $SHA1"
 
     case "$NGX_CC_NAME" in
@@ -49,7 +49,7 @@ else
         ngx_feature_path=
         ngx_feature_libs="-lmd"
         ngx_feature_test="SHA_CTX sha1; SHA1_Init(&sha1)"
-        . auto/feature
+        . $NGX_AUTO/feature
 
         ngx_sha1_lib="system md"
 
@@ -60,12 +60,12 @@ else
             ngx_feature="sha1 in system OpenSSL crypto library"
             ngx_feature_incs="#include <openssl/sha.h>"
             ngx_feature_libs="-lcrypto"
-            . auto/feature
+            . $NGX_AUTO/feature
 
             ngx_sha1_lib="system crypto"
 
             if [ $ngx_found = yes ]; then
-                have=NGX_HAVE_OPENSSL_SHA1_H . auto/have
+                have=NGX_HAVE_OPENSSL_SHA1_H . $NGX_AUTO/have
             fi
         fi
 

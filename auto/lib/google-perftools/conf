@@ -10,7 +10,7 @@
     ngx_feature_path=
     ngx_feature_libs="-lprofiler"
     ngx_feature_test="ProfilerStop()"
-    . auto/feature
+    . $NGX_AUTO/feature
 
 
 if [ $ngx_found = no ]; then
@@ -25,7 +25,7 @@ if [ $ngx_found = no ]; then
         ngx_feature_libs="-L/usr/local/lib -lprofiler"
     fi
 
-    . auto/feature
+    . $NGX_AUTO/feature
 fi
 
 
@@ -41,7 +41,7 @@ if [ $ngx_found = no ]; then
         ngx_feature_libs="-L/opt/local/lib -lprofiler"
     fi
 
-    . auto/feature
+    . $NGX_AUTO/feature
 fi
 
 

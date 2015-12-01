@@ -42,10 +42,14 @@ fi
 
 # create Makefile
 
-cat << END > Makefile
+if [ "$NGX_ROOT" = "." ]; then
+
+    cat << END > $NGX_ROOT/Makefile
 
 default:	build
 
 clean:
 	rm -rf Makefile $NGX_OBJS
 END
+
+fi

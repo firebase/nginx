@@ -58,7 +58,7 @@ if [ -x $NGX_AUTOTEST ]; then
                 ngx_found=yes
 
                 if test -n "$ngx_feature_name"; then
-                    have=$ngx_have_feature . auto/have
+                    have=$ngx_have_feature . $NGX_AUTO/have
                 fi
 
             else
@@ -94,7 +94,7 @@ END
                 ngx_found=yes
 
                 if test -n "$ngx_feature_name"; then
-                    have=$ngx_have_feature . auto/have
+                    have=$ngx_have_feature . $NGX_AUTO/have
                 fi
             fi
         ;;
@@ -104,7 +104,7 @@ END
             ngx_found=yes
 
             if test -n "$ngx_feature_name"; then
-                have=$ngx_have_feature . auto/have
+                have=$ngx_have_feature . $NGX_AUTO/have
             fi
         ;;
 
