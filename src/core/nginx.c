@@ -10,6 +10,10 @@
 #include <nginx.h>
 
 
+#if (NGX_MODULES)
+void ngx_show_modules(void);
+#endif
+
 static void ngx_show_version_info();
 static ngx_int_t ngx_add_inherited_sockets(ngx_cycle_t *cycle);
 static ngx_int_t ngx_get_options(int argc, char *const *argv);
@@ -421,7 +425,11 @@ ngx_show_version_info()
 #endif
 #endif
 
+#if (NGX_MODULES)
+        ngx_show_modules();
+#else
         ngx_write_stderr("configure arguments:" NGX_CONFIGURE NGX_LINEFEED);
+#endif
     }
 }
 

@@ -46,7 +46,7 @@ if [ "$NGX_ROOT" = "." ]; then
 
     cat << END > $NGX_ROOT/Makefile
 
-default:	build
+default:	all
 
 clean:
 	rm -rf Makefile $NGX_OBJS

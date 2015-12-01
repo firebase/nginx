@@ -162,7 +162,7 @@ fi
 
 cat << END >> $NGX_ROOT/Makefile
 
-build:
+all:
 	\$(MAKE) -f $NGX_MAKEFILE
 	\$(MAKE) -f $NGX_MAKEFILE manpage
 
