@@ -22,7 +22,6 @@ CORE_DEPS="src/core/nginx.h \
            src/core/ngx_parse_time.h \
            src/core/ngx_inet.h \
            src/core/ngx_file.h \
-           src/core/ngx_crc.h \
            src/core/ngx_crc32.h \
            src/core/ngx_murmurhash.h \
            src/core/ngx_md5.h \
