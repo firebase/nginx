@@ -200,20 +200,20 @@ typedef struct {
 
     ngx_table_elt_t                  *keep_alive;
 
-#if (NGX_HTTP_X_FORWARDED_FOR)
+#if 1
     ngx_array_t                       x_forwarded_for;
 #endif
 
-#if (NGX_HTTP_REALIP)
+#if 1
     ngx_table_elt_t                  *x_real_ip;
 #endif
 
-#if (NGX_HTTP_HEADERS)
+#if 1
     ngx_table_elt_t                  *accept;
     ngx_table_elt_t                  *accept_language;
 #endif
 
-#if (NGX_HTTP_DAV)
+#if 1
     ngx_table_elt_t                  *depth;
     ngx_table_elt_t                  *destination;
     ngx_table_elt_t                  *overwrite;
