@@ -44,9 +44,6 @@ typedef u_char *(*ngx_http_log_handler_pt)(ngx_http_request_t *r,
 #if (NGX_HTTP_CACHE)
 #include <ngx_http_cache.h>
 #endif
-#if (NGX_HTTP_SSI)
-#include <ngx_http_ssi_filter_module.h>
-#endif
 #if (NGX_HTTP_SSL)
 #include <ngx_http_ssl_module.h>
 #endif

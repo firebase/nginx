@@ -14,6 +14,10 @@
 #include <ngx_http.h>
 #include <nginx.h>
 
+#if (NGX_HTTP_SSI)
+#include <ngx_http_ssi_filter_module.h>
+#endif
+
 #include <EXTERN.h>
 #include <perl.h>
 

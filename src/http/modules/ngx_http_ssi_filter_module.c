@@ -8,6 +8,7 @@
 #include <ngx_config.h>
 #include <ngx_core.h>
 #include <ngx_http.h>
+#include <ngx_http_ssi_filter_module.h>
 
 #define NGX_HTTP_SSI_ERROR          1
 
