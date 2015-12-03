@@ -32,6 +32,7 @@ ngx_os_io_t ngx_os_io = {
 ngx_int_t
 ngx_os_init(ngx_log_t *log)
 {
+    long        value;
     ngx_uint_t  n;
 
 #if (NGX_HAVE_OS_SPECIFIC_INIT)
@@ -44,7 +45,14 @@ ngx_os_init(ngx_log_t *log)
         return NGX_ERROR;
     }
 
-    ngx_pagesize = getpagesize();
+    value = sysconf(_SC_PAGESIZE);
+    if (value == -1) {
+        ngx_log_error(NGX_LOG_ALERT, log, errno,
+                      "sysconf(_SC_PAGESIZE) failed");
+        return NGX_ERROR;
+    }
+
+    ngx_pagesize = (ngx_uint_t) value;
     ngx_cacheline_size = NGX_CPU_CACHE_LINE;
 
     for (n = ngx_pagesize; n >>= 1; ngx_pagesize_shift++) { /* void */ }
