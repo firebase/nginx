@@ -206,6 +206,9 @@ extern ngx_module_t  ngx_http_copy_filter_module;
 extern ngx_module_t  ngx_http_range_body_filter_module;
 extern ngx_module_t  ngx_http_not_modified_filter_module;
 #endif
+#if (NGX_HTTP_SLICE)
+extern ngx_module_t  ngx_http_slice_filter_module;
+#endif
 
 #if (NGX_MAIL)
 extern ngx_module_t  ngx_mail_module;
@@ -457,6 +460,9 @@ ngx_module_t *ngx_modules[] = {
     &ngx_http_range_body_filter_module,
     &ngx_http_not_modified_filter_module,
 #endif
+#if (NGX_HTTP_SLICE)
+    &ngx_http_slice_filter_module,
+#endif
 
 #if (NGX_MAIL)
     &ngx_mail_module,
@@ -577,6 +583,9 @@ ngx_show_modules(void)
 #endif
 #if (NGX_HTTP_SECURE_LINK)
     ngx_write_stderr(" --with-http_secure_link_module");
+#endif
+#if (NGX_HTTP_SLICE)
+    ngx_write_stderr(" --with-http_slice_module");
 #endif
 #if (NGX_HTTP_SSL)
     ngx_write_stderr(" --with-http_ssl_module");

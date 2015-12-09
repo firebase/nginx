@@ -737,6 +737,19 @@ cc_library(
 )
 
 cc_library(
+    name = "http_slice",
+    srcs = [
+        "src/http/modules/ngx_http_slice_filter_module.c",
+    ],
+    defines = [
+        "NGX_HTTP_SLICE",
+    ],
+    deps = [
+        ":http_postpone",
+    ],
+)
+
+cc_library(
     name = "http_split_clients",
     srcs = [
         "src/http/modules/ngx_http_split_clients_module.c",
@@ -1075,6 +1088,7 @@ cc_binary(
         ":http_rewrite",
         ":http_scgi",
         ":http_secure_link",
+        ":http_slice",
         ":http_split_clients",
         ":http_ssi",
         ":http_stub_status",
