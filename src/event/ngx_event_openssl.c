@@ -1940,6 +1940,9 @@ ngx_ssl_connection_error(ngx_connection_t *c, int sslerr, ngx_err_t err,
 #ifdef SSL_R_UNSAFE_LEGACY_RENEGOTIATION_DISABLED
             || n == SSL_R_UNSAFE_LEGACY_RENEGOTIATION_DISABLED       /*  338 */
 #endif
+#ifdef SSL_R_NO_RENEGOTIATION
+            || n == SSL_R_NO_RENEGOTIATION                           /*  339 */
+#endif
 #ifdef SSL_R_SCSV_RECEIVED_WHEN_RENEGOTIATING
             || n == SSL_R_SCSV_RECEIVED_WHEN_RENEGOTIATING           /*  345 */
 #endif
