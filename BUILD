@@ -351,6 +351,7 @@ cc_library(
         "src/http/v2/ngx_http_v2.h",
         "src/http/v2/ngx_http_v2_filter_module.c",
         "src/http/v2/ngx_http_v2_huff_decode.c",
+        "src/http/v2/ngx_http_v2_huff_encode.c",
         "src/http/v2/ngx_http_v2_module.c",
         "src/http/v2/ngx_http_v2_module.h",
         "src/http/v2/ngx_http_v2_table.c",
