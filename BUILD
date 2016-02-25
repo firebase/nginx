@@ -1,4 +1,4 @@
-# Copyright (C) 2015 Google Inc.
+# Copyright (C) 2015-2016 Google Inc.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -307,7 +307,8 @@ cc_library(
         ],
     }),
     deps = [
-        "//external:boringssl",
+        "//external:boringssl_crypto",
+        "//external:boringssl_ssl",
         "//external:pcre",
     ],
 )
@@ -388,6 +389,7 @@ cc_library(
         "NGX_HTTP_ACCESS",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -401,6 +403,8 @@ cc_library(
         "NGX_HTTP_ADDITION",
     ],
     deps = [
+        ":core",
+        ":http",
         ":http_postpone",
     ],
 )
@@ -414,6 +418,7 @@ cc_library(
         "NGX_HTTP_AUTH_BASIC",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -427,6 +432,7 @@ cc_library(
         "NGX_HTTP_AUTH_REQUEST",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -440,6 +446,7 @@ cc_library(
         "NGX_HTTP_AUTOINDEX",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -453,6 +460,7 @@ cc_library(
         "NGX_HTTP_BROWSER",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -466,6 +474,7 @@ cc_library(
         "NGX_HTTP_CHARSET",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -479,6 +488,7 @@ cc_library(
         "NGX_HTTP_DAV",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -492,6 +502,7 @@ cc_library(
         "NGX_HTTP_EMPTY_GIF",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -505,6 +516,7 @@ cc_library(
         "NGX_HTTP_FASTCGI",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -518,6 +530,7 @@ cc_library(
         "NGX_HTTP_FLV",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -531,6 +544,7 @@ cc_library(
         "NGX_HTTP_GEO",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -544,7 +558,9 @@ cc_library(
         "NGX_HTTP_GUNZIP",
     ],
     deps = [
+        ":core",
         ":http",
+        "//external:zlib",
     ],
 )
 
@@ -557,7 +573,9 @@ cc_library(
         "NGX_HTTP_GZIP_FILTER",
     ],
     deps = [
+        ":core",
         ":http",
+        "//external:zlib",
     ],
 )
 
@@ -570,6 +588,7 @@ cc_library(
         "NGX_HTTP_GZIP_STATIC",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -583,6 +602,7 @@ cc_library(
         "NGX_HTTP_LIMIT_CONN",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -596,6 +616,7 @@ cc_library(
         "NGX_HTTP_LIMIT_REQ",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -609,6 +630,7 @@ cc_library(
         "NGX_HTTP_MAP",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -622,6 +644,7 @@ cc_library(
         "NGX_HTTP_MEMCACHED",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -635,6 +658,7 @@ cc_library(
         "NGX_HTTP_MP4",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -648,6 +672,7 @@ cc_library(
         "NGX_HTTP_POSTPONE",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -661,6 +686,7 @@ cc_library(
         "NGX_HTTP_PROXY",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -674,6 +700,7 @@ cc_library(
         "NGX_HTTP_RANDOM_INDEX",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -687,6 +714,7 @@ cc_library(
         "NGX_HTTP_REALIP",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -700,6 +728,7 @@ cc_library(
         "NGX_HTTP_REFERER",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -713,6 +742,7 @@ cc_library(
         "NGX_HTTP_REWRITE",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -726,6 +756,7 @@ cc_library(
         "NGX_HTTP_SCGI",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -739,6 +770,7 @@ cc_library(
         "NGX_HTTP_SECURE_LINK",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -752,6 +784,8 @@ cc_library(
         "NGX_HTTP_SLICE",
     ],
     deps = [
+        ":core",
+        ":http",
         ":http_postpone",
     ],
 )
@@ -765,6 +799,7 @@ cc_library(
         "NGX_HTTP_SPLIT_CLIENTS",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -779,6 +814,8 @@ cc_library(
         "NGX_HTTP_SSI",
     ],
     deps = [
+        ":core",
+        ":http",
         ":http_postpone",
     ],
 )
@@ -792,6 +829,7 @@ cc_library(
         "NGX_HTTP_STUB_STATUS",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -805,6 +843,7 @@ cc_library(
         "NGX_HTTP_SUB",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -818,6 +857,7 @@ cc_library(
         "NGX_HTTP_UPSTREAM_HASH",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -831,6 +871,7 @@ cc_library(
         "NGX_HTTP_UPSTREAM_IP_HASH",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -844,6 +885,7 @@ cc_library(
         "NGX_HTTP_UPSTREAM_KEEPALIVE",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -857,6 +899,7 @@ cc_library(
         "NGX_HTTP_UPSTREAM_LEAST_CONN",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -870,6 +913,7 @@ cc_library(
         "NGX_HTTP_USERID",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -883,6 +927,7 @@ cc_library(
         "NGX_HTTP_UWSGI",
     ],
     deps = [
+        ":core",
         ":http",
     ],
 )
@@ -924,6 +969,7 @@ cc_library(
         "src/mail/ngx_mail_smtp_module.h",
     ],
     deps = [
+        ":core",
         ":mail",
     ],
 )
@@ -938,6 +984,8 @@ cc_library(
         "NGX_MAIL_IMAP",
     ],
     deps = [
+        ":core",
+        ":mail",
         ":mail_parse",
     ],
 )
@@ -952,6 +1000,8 @@ cc_library(
         "NGX_MAIL_POP3",
     ],
     deps = [
+        ":core",
+        ":mail",
         ":mail_parse",
     ],
 )
@@ -966,6 +1016,8 @@ cc_library(
         "NGX_MAIL_SMTP",
     ],
     deps = [
+        ":core",
+        ":mail",
         ":mail_parse",
     ],
 )
@@ -1010,6 +1062,7 @@ cc_library(
         "NGX_STREAM_ACCESS",
     ],
     deps = [
+        ":core",
         ":stream",
     ],
 )
@@ -1023,6 +1076,7 @@ cc_library(
         "NGX_STREAM_LIMIT_CONN",
     ],
     deps = [
+        ":core",
         ":stream",
     ],
 )
@@ -1036,6 +1090,7 @@ cc_library(
         "NGX_STREAM_UPSTREAM_HASH",
     ],
     deps = [
+        ":core",
         ":stream",
     ],
 )
@@ -1049,6 +1104,7 @@ cc_library(
         "NGX_STREAM_UPSTREAM_LEAST_CONN",
     ],
     deps = [
+        ":core",
         ":stream",
     ],
 )
@@ -1067,6 +1123,7 @@ cc_binary(
     ],
     linkstatic = 1,
     deps = [
+        ":core",
         ":http",
         ":http_access",
         ":http_addition",
