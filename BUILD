@@ -108,6 +108,19 @@ genrule(
           " --builddir=\"$(@D)/objs\"" +
           " --with-cc=\"$(CC)\"" +
           " --with-cc-opt=\"$(CC_FLAGS)\"" +
+          " --prefix=/etc/nginx" +
+          " --conf-path=/etc/nginx/nginx.conf" +
+          " --error-log-path=/var/log/nginx/error.log" +
+          " --pid-path=/var/run/nginx.pid" +
+          " --lock-path=/var/run/nginx.lock" +
+          " --user=nginx" +
+          " --group=nginx" +
+          " --http-log-path=/var/log/nginx/access.log" +
+          " --http-client-body-temp-path=/var/cache/nginx/client_temp" +
+          " --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp" +
+          " --http-proxy-temp-path=/var/cache/nginx/proxy_temp" +
+          " --http-scgi-temp-path=/var/cache/nginx/scgi_temp" +
+          " --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp" +
           " --with-ipv6" +
           " --without-http" +
           " --without-http-cache" +
