@@ -11,7 +11,7 @@
 
 
 #if (NGX_BAZEL)
-void ngx_show_modules(void);
+void ngx_show_configure_options(void);
 #endif
 
 static void ngx_show_version_info();
@@ -438,7 +438,7 @@ ngx_show_version_info()
 #endif
 
 #if (NGX_BAZEL)
-        ngx_show_modules();
+        ngx_show_configure_options();
 #else
         ngx_write_stderr("configure arguments:" NGX_CONFIGURE NGX_LINEFEED);
 #endif

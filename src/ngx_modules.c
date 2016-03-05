@@ -774,9 +774,54 @@ char *ngx_module_names[] = {
 
 
 void
-ngx_show_modules(void)
+ngx_show_configure_options(void)
 {
     ngx_write_stderr("configure arguments:");
+
+#ifdef NGX_PREFIX
+    ngx_write_stderr(" --prefix=");
+    (void) ngx_write_fd(ngx_stderr, NGX_PREFIX, ngx_strlen(NGX_PREFIX) - 1);
+#endif
+#ifdef NGX_CONF_PATH
+    ngx_write_stderr(" --conf-path=" NGX_CONF_PATH);
+#endif
+#ifdef NGX_ERROR_LOG_PATH
+    ngx_write_stderr(" --error-log-path=" NGX_ERROR_LOG_PATH);
+#endif
+#ifdef NGX_PID_PATH
+    ngx_write_stderr(" --pid-path=" NGX_PID_PATH);
+#endif
+#ifdef NGX_LOCK_PATH
+    ngx_write_stderr(" --lock-path=" NGX_LOCK_PATH);
+#endif
+#ifdef NGX_USER
+    ngx_write_stderr(" --user=" NGX_USER);
+#endif
+#ifdef NGX_GROUP
+    ngx_write_stderr(" --group=" NGX_GROUP);
+#endif
+
+#if (NGX_HTTP)
+#ifdef NGX_HTTP_LOG_PATH
+    ngx_write_stderr(" --http-log-path=" NGX_HTTP_LOG_PATH);
+#endif
+#ifdef NGX_HTTP_CLIENT_TEMP_PATH
+    ngx_write_stderr(" --http-client-body-temp-path="
+                     NGX_HTTP_CLIENT_TEMP_PATH);
+#endif
+#ifdef NGX_HTTP_FASTCGI_TEMP_PATH
+    ngx_write_stderr(" --http-fastcgi-temp-path=" NGX_HTTP_FASTCGI_TEMP_PATH);
+#endif
+#ifdef NGX_HTTP_PROXY_TEMP_PATH
+    ngx_write_stderr(" --http-proxy-temp-path=" NGX_HTTP_PROXY_TEMP_PATH);
+#endif
+#ifdef NGX_HTTP_SCGI_TEMP_PATH
+    ngx_write_stderr(" --http-scgi-temp-path=" NGX_HTTP_SCGI_TEMP_PATH);
+#endif
+#ifdef NGX_HTTP_UWSGI_TEMP_PATH
+    ngx_write_stderr(" --http-uwsgi-temp-path=" NGX_HTTP_UWSGI_TEMP_PATH);
+#endif
+#endif
 
 #if (NGX_DEBUG)
     ngx_write_stderr(" --with-debug");
