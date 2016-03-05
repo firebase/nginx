@@ -53,6 +53,27 @@ config_setting(
     },
 )
 
+filegroup(
+    name = "config_includes",
+    srcs = [
+        "conf/fastcgi_params",
+        "conf/koi-utf",
+        "conf/koi-win",
+        "conf/mime.types",
+        "conf/scgi_params",
+        "conf/uwsgi_params",
+        "conf/win-utf",
+    ],
+)
+
+filegroup(
+    name = "html_files",
+    srcs = [
+        "docs/html/50x.html",
+        "docs/html/index.html",
+    ],
+)
+
 genrule(
     name = "configure",
     srcs = [
