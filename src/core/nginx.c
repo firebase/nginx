@@ -10,7 +10,7 @@
 #include <nginx.h>
 
 
-#if (NGX_MODULES)
+#if (NGX_BAZEL)
 void ngx_show_modules(void);
 #endif
 
@@ -412,6 +412,10 @@ ngx_show_version_info()
 
     if (ngx_show_configure) {
 
+#if (NGX_BAZEL)
+        ngx_write_stderr("built by Bazel" NGX_LINEFEED);
+#endif
+
 #ifdef NGX_COMPILER
         ngx_write_stderr("built by " NGX_COMPILER NGX_LINEFEED);
 #endif
@@ -433,7 +437,7 @@ ngx_show_version_info()
 #endif
 #endif
 
-#if (NGX_MODULES)
+#if (NGX_BAZEL)
         ngx_show_modules();
 #else
         ngx_write_stderr("configure arguments:" NGX_CONFIGURE NGX_LINEFEED);

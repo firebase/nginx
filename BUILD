@@ -270,8 +270,8 @@ cc_library(
         "src/event/ngx_event_pipe.h",
     ],
     defines = [
+        "NGX_BAZEL",
         "NGX_CRYPT",
-        "NGX_MODULES",
         "NGX_STAT_STUB",
         # BoringSSL
         "NGX_HAVE_MD5",
