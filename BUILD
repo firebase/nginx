@@ -264,6 +264,7 @@ cc_library(
         "src/os/unix/ngx_time.c",
         "src/os/unix/ngx_time.h",
         "src/os/unix/ngx_udp_recv.c",
+        "src/os/unix/ngx_udp_send.c",
         "src/os/unix/ngx_user.c",
         "src/os/unix/ngx_user.h",
         "src/os/unix/ngx_writev_chain.c",
