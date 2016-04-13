@@ -6,6 +6,7 @@
 
 #include <ngx_config.h>
 #include <ngx_core.h>
+#include <ngx_modules.h>
 
 
 extern ngx_module_t  ngx_core_module;

@@ -9,10 +9,10 @@
 #include <ngx_core.h>
 #include <nginx.h>
 
-
 #if (NGX_BAZEL)
-void ngx_show_configure_options(void);
+#include <ngx_modules.h>
 #endif
+
 
 static void ngx_show_version_info(void);
 static ngx_int_t ngx_add_inherited_sockets(ngx_cycle_t *cycle);

@@ -26,6 +26,8 @@ licenses(["notice"])  # BSD license
 
 exports_files(["LICENSE"])
 
+load("//:build.bzl", "nginx_copts")
+
 package(
     default_visibility = [
         "//visibility:public",
@@ -303,7 +305,9 @@ cc_library(
         "src/event/ngx_event.h",
         "src/event/ngx_event_connect.h",
         "src/event/ngx_event_pipe.h",
+        "src/ngx_modules.h",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_BAZEL",
         "NGX_CRYPT",
@@ -326,6 +330,7 @@ cc_library(
     }),
     includes = [
         "objs",
+        "src",
         "src/core",
         "src/event",
         "src/os/unix",
@@ -395,6 +400,7 @@ cc_library(
     hdrs = [
         "src/http/ngx_http.h",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP",
         "NGX_HTTP_CACHE",
@@ -420,6 +426,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_access_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_ACCESS",
     ],
@@ -434,6 +441,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_addition_filter_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_ADDITION",
     ],
@@ -449,6 +457,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_auth_basic_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_AUTH_BASIC",
     ],
@@ -463,6 +472,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_auth_request_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_AUTH_REQUEST",
     ],
@@ -477,6 +487,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_autoindex_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_AUTOINDEX",
     ],
@@ -491,6 +502,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_browser_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_BROWSER",
     ],
@@ -505,6 +517,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_charset_filter_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_CHARSET",
     ],
@@ -519,6 +532,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_dav_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_DAV",
     ],
@@ -533,6 +547,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_empty_gif_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_EMPTY_GIF",
     ],
@@ -547,6 +562,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_fastcgi_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_FASTCGI",
     ],
@@ -561,6 +577,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_flv_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_FLV",
     ],
@@ -575,6 +592,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_geo_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_GEO",
     ],
@@ -589,6 +607,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_gunzip_filter_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_GUNZIP",
     ],
@@ -604,6 +623,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_gzip_filter_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_GZIP_FILTER",
     ],
@@ -619,6 +639,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_gzip_static_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_GZIP_STATIC",
     ],
@@ -633,6 +654,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_limit_conn_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_LIMIT_CONN",
     ],
@@ -647,6 +669,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_limit_req_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_LIMIT_REQ",
     ],
@@ -661,6 +684,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_map_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_MAP",
     ],
@@ -675,6 +699,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_memcached_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_MEMCACHED",
     ],
@@ -689,6 +714,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_mp4_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_MP4",
     ],
@@ -703,6 +729,7 @@ cc_library(
     srcs = [
         "src/http/ngx_http_postpone_filter_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_POSTPONE",
     ],
@@ -717,6 +744,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_proxy_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_PROXY",
     ],
@@ -731,6 +759,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_random_index_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_RANDOM_INDEX",
     ],
@@ -745,6 +774,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_realip_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_REALIP",
     ],
@@ -759,6 +789,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_referer_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_REFERER",
     ],
@@ -773,6 +804,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_rewrite_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_REWRITE",
     ],
@@ -787,6 +819,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_scgi_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_SCGI",
     ],
@@ -801,6 +834,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_secure_link_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_SECURE_LINK",
     ],
@@ -815,6 +849,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_slice_filter_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_SLICE",
     ],
@@ -830,6 +865,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_split_clients_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_SPLIT_CLIENTS",
     ],
@@ -844,6 +880,9 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_ssi_filter_module.c",
         "src/http/modules/ngx_http_ssi_filter_module.h",
+    ],
+    copts = nginx_copts + [
+        "-Wno-format-nonliteral",
     ],
     defines = [
         "NGX_HTTP_SSI",
@@ -860,6 +899,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_stub_status_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_STUB_STATUS",
     ],
@@ -874,6 +914,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_sub_filter_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_SUB",
     ],
@@ -888,6 +929,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_upstream_hash_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_UPSTREAM_HASH",
     ],
@@ -902,6 +944,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_upstream_ip_hash_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_UPSTREAM_IP_HASH",
     ],
@@ -916,6 +959,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_upstream_keepalive_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_UPSTREAM_KEEPALIVE",
     ],
@@ -930,6 +974,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_upstream_least_conn_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_UPSTREAM_LEAST_CONN",
     ],
@@ -944,6 +989,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_userid_filter_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_USERID",
     ],
@@ -958,6 +1004,7 @@ cc_library(
     srcs = [
         "src/http/modules/ngx_http_uwsgi_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_UWSGI",
     ],
@@ -981,6 +1028,7 @@ cc_library(
     hdrs = [
         "src/mail/ngx_mail.h",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_MAIL",
         "NGX_MAIL_SSL",
@@ -1003,6 +1051,7 @@ cc_library(
         "src/mail/ngx_mail_pop3_module.h",
         "src/mail/ngx_mail_smtp_module.h",
     ],
+    copts = nginx_copts,
     deps = [
         ":core",
         ":mail",
@@ -1015,6 +1064,7 @@ cc_library(
         "src/mail/ngx_mail_imap_handler.c",
         "src/mail/ngx_mail_imap_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_MAIL_IMAP",
     ],
@@ -1031,6 +1081,7 @@ cc_library(
         "src/mail/ngx_mail_pop3_handler.c",
         "src/mail/ngx_mail_pop3_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_MAIL_POP3",
     ],
@@ -1047,6 +1098,7 @@ cc_library(
         "src/mail/ngx_mail_smtp_handler.c",
         "src/mail/ngx_mail_smtp_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_MAIL_SMTP",
     ],
@@ -1075,6 +1127,7 @@ cc_library(
     hdrs = [
         "src/stream/ngx_stream.h",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_STREAM",
         "NGX_STREAM_SSL",
@@ -1093,6 +1146,7 @@ cc_library(
     srcs = [
         "src/stream/ngx_stream_access_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_STREAM_ACCESS",
     ],
@@ -1107,6 +1161,7 @@ cc_library(
     srcs = [
         "src/stream/ngx_stream_limit_conn_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_STREAM_LIMIT_CONN",
     ],
@@ -1121,6 +1176,7 @@ cc_library(
     srcs = [
         "src/stream/ngx_stream_upstream_hash_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_STREAM_UPSTREAM_HASH",
     ],
@@ -1135,6 +1191,7 @@ cc_library(
     srcs = [
         "src/stream/ngx_stream_upstream_least_conn_module.c",
     ],
+    copts = nginx_copts,
     defines = [
         "NGX_STREAM_UPSTREAM_LEAST_CONN",
     ],
@@ -1156,6 +1213,7 @@ cc_binary(
     srcs = [
         ":modules",
     ],
+    copts = nginx_copts,
     linkstatic = 1,
     deps = [
         ":core",
