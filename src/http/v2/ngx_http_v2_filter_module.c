@@ -627,6 +627,10 @@ ngx_http_v2_create_trailers_frame(ngx_http_request_t *r)
     ngx_list_part_t  *part;
     ngx_table_elt_t  *header;
 
+    if (ngx_http_eval_trailers(r) != NGX_OK) {
+        return NULL;
+    }
+
     len = 0;
     tmp_len = 0;
 

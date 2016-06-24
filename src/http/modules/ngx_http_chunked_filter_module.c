@@ -254,6 +254,10 @@ ngx_http_chunked_get_trailers(ngx_http_request_t *r)
     ngx_table_elt_t                *header;
     ngx_http_chunked_filter_ctx_t  *ctx;
 
+    if (ngx_http_eval_trailers(r) != NGX_OK) {
+        return NULL;
+    }
+
     len = 0;
 
     part = &r->headers_out.trailers.part;
