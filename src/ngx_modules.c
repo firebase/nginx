@@ -247,6 +247,12 @@ extern ngx_module_t  ngx_stream_limit_conn_module;
 #if (NGX_STREAM_ACCESS)
 extern ngx_module_t  ngx_stream_access_module;
 #endif
+#if (NGX_STREAM_MAP)
+extern ngx_module_t  ngx_stream_map_module;
+#endif
+#if (NGX_STREAM_RETURN)
+extern ngx_module_t  ngx_stream_return_module;
+#endif
 #if (NGX_STREAM_UPSTREAM_HASH)
 extern ngx_module_t  ngx_stream_upstream_hash_module;
 #endif
@@ -500,6 +506,12 @@ ngx_module_t *ngx_modules[] = {
 #endif
 #if (NGX_STREAM_ACCESS)
     &ngx_stream_access_module,
+#endif
+#if (NGX_STREAM_MAP)
+    &ngx_stream_map_module,
+#endif
+#if (NGX_STREAM_RETURN)
+    &ngx_stream_return_module,
 #endif
 #if (NGX_STREAM_UPSTREAM_HASH)
     &ngx_stream_upstream_hash_module,
@@ -756,6 +768,12 @@ char *ngx_module_names[] = {
 #endif
 #if (NGX_STREAM_ACCESS)
     "ngx_stream_access_module",
+#endif
+#if (NGX_STREAM_MAP)
+    "ngx_stream_map_module",
+#endif
+#if (NGX_STREAM_RETURN)
+    "ngx_stream_return_module",
 #endif
 #if (NGX_STREAM_UPSTREAM_HASH)
     "ngx_stream_upstream_hash_module",
@@ -1015,6 +1033,12 @@ ngx_show_configure_options(void)
 #endif
 #if !(NGX_STREAM_LIMIT_CONN)
     ngx_write_stderr(" --without-stream_limit_conn_module");
+#endif
+#if !(NGX_STREAM_MAP)
+    ngx_write_stderr(" --without-stream_map_module");
+#endif
+#if !(NGX_STREAM_RETURN)
+    ngx_write_stderr(" --without-stream_return_module");
 #endif
 #if !(NGX_STREAM_UPSTREAM_HASH)
     ngx_write_stderr(" --without-stream_upstream_hash_module");

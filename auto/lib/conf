@@ -25,35 +25,6 @@ if [ $USE_OPENSSL = YES ]; then
     . $NGX_AUTO/lib/openssl/conf
 fi
 
-if [ $USE_MD5 = YES ]; then
-
-    if [ $USE_OPENSSL = YES ]; then
-        have=NGX_HAVE_OPENSSL_MD5_H . $NGX_AUTO/have
-        have=NGX_OPENSSL_MD5 . $NGX_AUTO/have
-        have=NGX_HAVE_MD5 . $NGX_AUTO/have
-        MD5=YES
-        MD5_LIB=OpenSSL
-
-    else
-        . $NGX_AUTO/lib/md5/conf
-    fi
-
-fi
-
-if [ $USE_SHA1 = YES ]; then
-
-    if [ $USE_OPENSSL = YES ]; then
-        have=NGX_HAVE_OPENSSL_SHA1_H . $NGX_AUTO/have
-        have=NGX_HAVE_SHA1 . $NGX_AUTO/have
-        SHA1=YES
-        SHA1_LIB=OpenSSL
-
-    else
-        . $NGX_AUTO/lib/sha1/conf
-    fi
-
-fi
-
 if [ $USE_ZLIB = YES ]; then
     . $NGX_AUTO/lib/zlib/conf
 fi

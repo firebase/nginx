@@ -313,9 +313,7 @@ cc_library(
         "NGX_CRYPT",
         "NGX_STAT_STUB",
         # BoringSSL
-        "NGX_HAVE_MD5",
         "NGX_HAVE_OPENSSL_MD5_H",
-        "NGX_HAVE_SHA1",
         "NGX_HAVE_OPENSSL_SHA1_H",
         "NGX_OPENSSL",
         "NGX_SSL",
@@ -1116,6 +1114,8 @@ cc_library(
         "src/stream/ngx_stream_core_module.c",
         "src/stream/ngx_stream_handler.c",
         "src/stream/ngx_stream_proxy_module.c",
+        "src/stream/ngx_stream_script.c",
+        "src/stream/ngx_stream_script.h",
         "src/stream/ngx_stream_ssl_module.c",
         "src/stream/ngx_stream_ssl_module.h",
         "src/stream/ngx_stream_upstream.c",
@@ -1123,6 +1123,8 @@ cc_library(
         "src/stream/ngx_stream_upstream_round_robin.c",
         "src/stream/ngx_stream_upstream_round_robin.h",
         "src/stream/ngx_stream_upstream_zone_module.c",
+        "src/stream/ngx_stream_variables.c",
+        "src/stream/ngx_stream_variables.h",
     ],
     hdrs = [
         "src/stream/ngx_stream.h",
@@ -1164,6 +1166,36 @@ cc_library(
     copts = nginx_copts,
     defines = [
         "NGX_STREAM_LIMIT_CONN",
+    ],
+    deps = [
+        ":core",
+        ":stream",
+    ],
+)
+
+cc_library(
+    name = "stream_map",
+    srcs = [
+        "src/stream/ngx_stream_map_module.c",
+    ],
+    copts = nginx_copts,
+    defines = [
+        "NGX_STREAM_MAP",
+    ],
+    deps = [
+        ":core",
+        ":stream",
+    ],
+)
+
+cc_library(
+    name = "stream_return",
+    srcs = [
+        "src/stream/ngx_stream_return_module.c",
+    ],
+    copts = nginx_copts,
+    defines = [
+        "NGX_STREAM_RETURN",
     ],
     deps = [
         ":core",
@@ -1263,6 +1295,8 @@ cc_binary(
         ":stream",
         ":stream_access",
         ":stream_limit_conn",
+        ":stream_map",
+        ":stream_return",
         ":stream_upstream_hash",
         ":stream_upstream_least_conn",
     ],
