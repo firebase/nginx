@@ -26,7 +26,7 @@ licenses(["notice"])  # BSD license
 
 exports_files(["LICENSE"])
 
-load("//:build.bzl", "nginx_copts")
+load(":build.bzl", "nginx_copts")
 
 package(
     default_visibility = [
