@@ -1021,17 +1021,19 @@ ngx_http_v2_send_chain(ngx_connection_t *fc, ngx_chain_t *in, off_t limit)
             }
         }
 
-        frame = ngx_http_v2_filter_get_data_frame(stream, frame_size, out, cl);
-        if (frame == NULL) {
-            return NGX_CHAIN_ERROR;
+        if (frame_size || cl->buf->last_buf) {
+            frame = ngx_http_v2_filter_get_data_frame(stream, frame_size, out, cl);
+            if (frame == NULL) {
+                return NGX_CHAIN_ERROR;
+            }
+
+            ngx_http_v2_queue_frame(h2c, frame);
+
+            h2c->send_window -= frame_size;
+
+            stream->send_window -= frame_size;
+            stream->queued++;
         }
-
-        ngx_http_v2_queue_frame(h2c, frame);
-
-        h2c->send_window -= frame_size;
-
-        stream->send_window -= frame_size;
-        stream->queued++;
 
         if (trailers) {
             ngx_http_v2_queue_frame(h2c, trailers);
