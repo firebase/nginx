@@ -122,13 +122,13 @@ genrule(
         ],
     }),
     outs = [
-        "objs/autoconf.err",
-        "objs/autoconf.log",
-        "objs/ngx_auto_config.h",
-        "objs/ngx_auto_headers.h",
+        "bazel-objs/autoconf.err",
+        "bazel-objs/autoconf.log",
+        "bazel-objs/ngx_auto_config.h",
+        "bazel-objs/ngx_auto_headers.h",
     ],
     cmd = "$(location auto/configure)" +
-          " --builddir=\"$(@D)/objs\"" +
+          " --builddir=\"$(@D)/bazel-objs\"" +
           " --with-cc=\"$(CC)\"" +
           " --with-cc-opt=\"$(CC_FLAGS)\"" +
           " --prefix=/etc/nginx" +
@@ -149,7 +149,7 @@ genrule(
           " --without-http-cache" +
           " --without-http_auth_basic_module" +
           " --without-http_upstream_zone_module" +
-          " 2>&1 >$(@D)/objs/autoconf.log",
+          " 2>&1 >$(@D)/bazel-objs/autoconf.log",
     visibility = [
         "//visibility:private",
     ],
@@ -158,8 +158,8 @@ genrule(
 cc_library(
     name = "core",
     srcs = [
-        "objs/ngx_auto_config.h",
-        "objs/ngx_auto_headers.h",
+        "bazel-objs/ngx_auto_config.h",
+        "bazel-objs/ngx_auto_headers.h",
         "src/core/nginx.c",
         "src/core/ngx_array.c",
         "src/core/ngx_array.h",
@@ -327,7 +327,7 @@ cc_library(
         "//conditions:default": [],
     }),
     includes = [
-        "objs",
+        "bazel-objs",
         "src",
         "src/core",
         "src/event",
