@@ -1075,3 +1075,14 @@ ngx_show_configure_options(void)
 
     ngx_write_stderr(NGX_LINEFEED);
 }
+
+
+#if !(NGX_NO_MAIN)
+
+int ngx_cdecl
+main(int argc, char *const *argv)
+{
+    return ngx_main(argc, argv);
+}
+
+#endif

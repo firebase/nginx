@@ -188,7 +188,11 @@ static char **ngx_os_environ;
 
 
 int ngx_cdecl
+#if (NGX_BAZEL || NGX_NO_MAIN)
+ngx_main(int argc, char *const *argv)
+#else
 main(int argc, char *const *argv)
+#endif
 {
     ngx_buf_t        *b;
     ngx_log_t        *log;

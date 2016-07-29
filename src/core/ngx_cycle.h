@@ -114,6 +114,10 @@ typedef struct {
 #define ngx_is_init_cycle(cycle)  (cycle->conf_ctx == NULL)
 
 
+#if (NGX_BAZEL || NGX_NO_MAIN)
+int ngx_cdecl ngx_main(int argc, char *const *argv);
+#endif
+
 ngx_cycle_t *ngx_init_cycle(ngx_cycle_t *old_cycle);
 ngx_int_t ngx_create_pidfile(ngx_str_t *name, ngx_log_t *log);
 void ngx_delete_pidfile(ngx_cycle_t *cycle);
