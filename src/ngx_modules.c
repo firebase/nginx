@@ -247,8 +247,14 @@ extern ngx_module_t  ngx_stream_limit_conn_module;
 #if (NGX_STREAM_ACCESS)
 extern ngx_module_t  ngx_stream_access_module;
 #endif
+#if (NGX_STREAM_GEO)
+extern ngx_module_t  ngx_stream_geo_module;
+#endif
 #if (NGX_STREAM_MAP)
 extern ngx_module_t  ngx_stream_map_module;
+#endif
+#if (NGX_STREAM_SPLIT_CLIENTS)
+extern ngx_module_t  ngx_stream_split_clients_module;
 #endif
 #if (NGX_STREAM_RETURN)
 extern ngx_module_t  ngx_stream_return_module;
@@ -507,8 +513,14 @@ ngx_module_t *ngx_modules[] = {
 #if (NGX_STREAM_ACCESS)
     &ngx_stream_access_module,
 #endif
+#if (NGX_STREAM_GEO)
+    &ngx_stream_geo_module,
+#endif
 #if (NGX_STREAM_MAP)
     &ngx_stream_map_module,
+#endif
+#if (NGX_STREAM_SPLIT_CLIENTS)
+    &ngx_stream_split_clients_module,
 #endif
 #if (NGX_STREAM_RETURN)
     &ngx_stream_return_module,
@@ -769,8 +781,14 @@ char *ngx_module_names[] = {
 #if (NGX_STREAM_ACCESS)
     "ngx_stream_access_module",
 #endif
+#if (NGX_STREAM_GEO)
+    "ngx_stream_geo_module",
+#endif
 #if (NGX_STREAM_MAP)
     "ngx_stream_map_module",
+#endif
+#if (NGX_STREAM_SPLIT_CLIENTS)
+    "ngx_stream_split_clients_module",
 #endif
 #if (NGX_STREAM_RETURN)
     "ngx_stream_return_module",
@@ -1031,6 +1049,9 @@ ngx_show_configure_options(void)
 #if !(NGX_STREAM_ACCESS)
     ngx_write_stderr(" --without-stream_access_module");
 #endif
+#if !(NGX_STREAM_GEO)
+    ngx_write_stderr(" --without-stream_geo_module");
+#endif
 #if !(NGX_STREAM_LIMIT_CONN)
     ngx_write_stderr(" --without-stream_limit_conn_module");
 #endif
@@ -1039,6 +1060,9 @@ ngx_show_configure_options(void)
 #endif
 #if !(NGX_STREAM_RETURN)
     ngx_write_stderr(" --without-stream_return_module");
+#endif
+#if !(NGX_STREAM_SPLIT_CLIENTS)
+    ngx_write_stderr(" --without-stream_split_clients_module");
 #endif
 #if !(NGX_STREAM_UPSTREAM_HASH)
     ngx_write_stderr(" --without-stream_upstream_hash_module");

@@ -1159,6 +1159,21 @@ cc_library(
 )
 
 cc_library(
+    name = "stream_geo",
+    srcs = [
+        "src/stream/ngx_stream_geo_module.c",
+    ],
+    copts = nginx_copts,
+    defines = [
+        "NGX_STREAM_GEO",
+    ],
+    deps = [
+        ":core",
+        ":stream",
+    ],
+)
+
+cc_library(
     name = "stream_limit_conn",
     srcs = [
         "src/stream/ngx_stream_limit_conn_module.c",
@@ -1196,6 +1211,21 @@ cc_library(
     copts = nginx_copts,
     defines = [
         "NGX_STREAM_RETURN",
+    ],
+    deps = [
+        ":core",
+        ":stream",
+    ],
+)
+
+cc_library(
+    name = "stream_split_clients",
+    srcs = [
+        "src/stream/ngx_stream_split_clients_module.c",
+    ],
+    copts = nginx_copts,
+    defines = [
+        "NGX_STREAM_SPLIT_CLIENTS",
     ],
     deps = [
         ":core",
@@ -1294,9 +1324,11 @@ cc_binary(
         ":mail_smtp",
         ":stream",
         ":stream_access",
+        ":stream_geo",
         ":stream_limit_conn",
         ":stream_map",
         ":stream_return",
+        ":stream_split_clients",
         ":stream_upstream_hash",
         ":stream_upstream_least_conn",
     ],
