@@ -26,4 +26,7 @@ workspace(name = "nginx")
 
 load(":build.bzl", "nginx_repositories")
 
-nginx_repositories(bind = True)
+nginx_repositories(
+    bind = True,
+    nginx = "@//",
+)

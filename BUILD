@@ -27,6 +27,7 @@ licenses(["notice"])  # BSD license
 exports_files(["LICENSE"])
 
 load(":build.bzl", "nginx_copts")
+load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_deb", "pkg_tar")
 
 package(
     default_visibility = [
@@ -1332,4 +1333,77 @@ cc_binary(
         ":stream_upstream_hash",
         ":stream_upstream_least_conn",
     ],
+)
+
+genrule(
+    name = "nginx-google-copyright",
+    srcs = [
+        ":LICENSE",
+        "@boringssl//:LICENSE",
+        "@nginx_pcre//:LICENCE",
+        "@nginx_zlib//:README",
+    ],
+    outs = [
+        "usr/share/doc/nginx-google/copyright",
+    ],
+    cmd = "cat $(location :LICENSE) > $(@);" +
+          "echo \"\n\" >> $(@);" +
+          "echo \"This NGINX binary is statically linked against:\" >> $(@);" +
+          "echo \"BoringSSL, PCRE & zlib.\" >> $(@);" +
+          "echo \"\n\nBoringSSL license:\n==================\n\" >> $(@);" +
+          "cat $(location @boringssl//:LICENSE) >> $(@);" +
+          "echo \"\n\nPCRE license:\n=============\n\" >> $(@);" +
+          "cat $(location @nginx_pcre//:LICENCE) >> $(@);" +
+          "echo \"\n\nzlib license:\n=============\n\" >> $(@);" +
+          "cat $(location @nginx_zlib//:README) | grep -A99 Copyright >> $(@)",
+)
+
+pkg_tar(
+    name = "nginx-google-sbin",
+    files = [
+        ":nginx",
+    ],
+    mode = "0755",
+    package_dir = "/usr/sbin",
+    strip_prefix = "/",
+)
+
+pkg_tar(
+    name = "nginx-google-data",
+    extension = "tar.gz",
+    files = [
+        "usr/share/doc/nginx-google/copyright",
+    ],
+    mode = "0644",
+    strip_prefix = "/",
+    deps = [
+        ":nginx-google-sbin",
+        "@nginx_pkgoss//:debian_overlay",
+    ],
+)
+
+pkg_deb(
+    name = "nginx-google",
+    architecture = "amd64",
+    conflicts = [
+        "nginx",
+        "nginx-common",
+        "endpoints-server-proxy",
+    ],
+    data = ":nginx-google-data.tar.gz",
+    depends = [
+        "libc6 (>= 2.10)",
+        "lsb-base",
+        "adduser",
+    ],
+    description = "high-performance web server and reverse proxy",
+    homepage = "https://nginx.googlesource.com",
+    maintainer = "Piotr Sikora <piotrsikora@google.com>",
+    package = "nginx-google",
+    postinst = "@nginx_pkgoss//:debian_postinst",
+    postrm = "@nginx_pkgoss//:debian_postrm",
+    preinst = "@nginx_pkgoss//:debian_preinst",
+    prerm = "@nginx_pkgoss//:debian_prerm",
+    section = "httpd",
+    version = "1.11.3",
 )
