@@ -162,6 +162,8 @@ cc_library(
         "-DSUPPORT_PCRE8",
         "-DSUPPORT_UCP",
         "-DSUPPORT_UTF",
+        "-Wno-maybe-uninitialized",
+        "-Wno-unknown-warning-option",
     ],
     includes = [
         ".",
