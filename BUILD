@@ -222,6 +222,8 @@ cc_library(
         "src/core/ngx_string.h",
         "src/core/ngx_syslog.c",
         "src/core/ngx_syslog.h",
+        "src/core/ngx_thread_pool.c",
+        "src/core/ngx_thread_pool.h",
         "src/core/ngx_times.c",
         "src/core/ngx_times.h",
         "src/event/ngx_event.c",
@@ -264,6 +266,9 @@ cc_library(
         "src/os/unix/ngx_socket.c",
         "src/os/unix/ngx_socket.h",
         "src/os/unix/ngx_thread.h",
+        "src/os/unix/ngx_thread_cond.c",
+        "src/os/unix/ngx_thread_id.c",
+        "src/os/unix/ngx_thread_mutex.c",
         "src/os/unix/ngx_time.c",
         "src/os/unix/ngx_time.h",
         "src/os/unix/ngx_udp_recv.c",
@@ -313,6 +318,7 @@ cc_library(
         "NGX_BAZEL",
         "NGX_CRYPT",
         "NGX_STAT_STUB",
+        "NGX_THREADS",
         # BoringSSL
         "NGX_HAVE_OPENSSL_MD5_H",
         "NGX_HAVE_OPENSSL_SHA1_H",
@@ -338,6 +344,7 @@ cc_library(
         ":darwin": [],
         ":freebsd": [
             "-lcrypt",
+            "-lpthread",
         ],
         "//conditions:default": [
             "-lcrypt",
