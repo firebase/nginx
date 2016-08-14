@@ -226,6 +226,8 @@ cc_library(
         "src/core/ngx_thread_pool.h",
         "src/core/ngx_times.c",
         "src/core/ngx_times.h",
+        "src/event/modules/ngx_poll_module.c",
+        "src/event/modules/ngx_select_module.c",
         "src/event/ngx_event.c",
         "src/event/ngx_event_accept.c",
         "src/event/ngx_event_connect.c",
@@ -317,6 +319,8 @@ cc_library(
     defines = [
         "NGX_BAZEL",
         "NGX_CRYPT",
+        "NGX_HAVE_POLL",
+        "NGX_HAVE_SELECT",
         "NGX_STAT_STUB",
         "NGX_THREADS",
         # BoringSSL
