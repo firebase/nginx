@@ -99,6 +99,7 @@ ngx_module_t  ngx_thread_pool_module = {
 static ngx_str_t  ngx_thread_pool_default = ngx_string("default");
 
 static ngx_uint_t               ngx_thread_pool_task_id;
+static ngx_event_t              ngx_thread_pool_notify;
 static ngx_atomic_t             ngx_thread_pool_done_lock;
 static ngx_thread_pool_queue_t  ngx_thread_pool_done;
 
@@ -110,12 +111,6 @@ ngx_thread_pool_init(ngx_thread_pool_t *tp, ngx_log_t *log, ngx_pool_t *pool)
     pthread_t       tid;
     ngx_uint_t      n;
     pthread_attr_t  attr;
-
-    if (ngx_notify == NULL) {
-        ngx_log_error(NGX_LOG_ALERT, log, 0,
-               "the configured event method cannot be used with thread pools");
-        return NGX_ERROR;
-    }
 
     ngx_thread_pool_queue_init(&tp->queue);
 
@@ -356,7 +351,7 @@ ngx_thread_pool_cycle(void *data)
 
         ngx_unlock(&ngx_thread_pool_done_lock);
 
-        (void) ngx_notify(ngx_thread_pool_handler);
+        (void) ngx_notify(&ngx_thread_pool_notify);
     }
 }
 
@@ -595,8 +590,20 @@ ngx_thread_pool_init_worker(ngx_cycle_t *cycle)
     tcf = (ngx_thread_pool_conf_t *) ngx_get_conf(cycle->conf_ctx,
                                                   ngx_thread_pool_module);
 
-    if (tcf == NULL) {
+    if (tcf == NULL || tcf->pools.nelts == 0) {
         return NGX_OK;
+    }
+
+    if (ngx_notify_init == NULL || ngx_notify == NULL) {
+        ngx_log_error(NGX_LOG_ALERT, cycle->log, 0,
+               "the configured event method cannot be used with thread pools");
+        return NGX_ERROR;
+    }
+
+    if (ngx_notify_init(&ngx_thread_pool_notify, ngx_thread_pool_handler, cycle)
+        != NGX_OK)
+    {
+        return NGX_ERROR;
     }
 
     ngx_thread_pool_queue_init(&ngx_thread_pool_done);
@@ -629,7 +636,7 @@ ngx_thread_pool_exit_worker(ngx_cycle_t *cycle)
     tcf = (ngx_thread_pool_conf_t *) ngx_get_conf(cycle->conf_ctx,
                                                   ngx_thread_pool_module);
 
-    if (tcf == NULL) {
+    if (tcf == NULL || tcf->pools.nelts == 0) {
         return;
     }
 
@@ -637,5 +644,9 @@ ngx_thread_pool_exit_worker(ngx_cycle_t *cycle)
 
     for (i = 0; i < tcf->pools.nelts; i++) {
         ngx_thread_pool_destroy(tpp[i]);
+    }
+
+    if (ngx_notify_close != NULL) {
+        ngx_notify_close(&ngx_thread_pool_notify);
     }
 }

@@ -18,7 +18,8 @@ typedef struct {
 
 static ngx_int_t ngx_kqueue_init(ngx_cycle_t *cycle, ngx_msec_t timer);
 #ifdef EVFILT_USER
-static ngx_int_t ngx_kqueue_notify_init(ngx_log_t *log);
+static ngx_int_t ngx_kqueue_notify_init(ngx_event_t *notify_event,
+    ngx_event_handler_pt handler, ngx_cycle_t *cycle);
 #endif
 static void ngx_kqueue_done(ngx_cycle_t *cycle);
 static ngx_int_t ngx_kqueue_add_event(ngx_event_t *ev, ngx_int_t event,
@@ -28,7 +29,7 @@ static ngx_int_t ngx_kqueue_del_event(ngx_event_t *ev, ngx_int_t event,
 static ngx_int_t ngx_kqueue_set_event(ngx_event_t *ev, ngx_int_t filter,
     ngx_uint_t flags);
 #ifdef EVFILT_USER
-static ngx_int_t ngx_kqueue_notify(ngx_event_handler_pt handler);
+static ngx_int_t ngx_kqueue_notify(ngx_event_t *notify_event);
 #endif
 static ngx_int_t ngx_kqueue_process_events(ngx_cycle_t *cycle, ngx_msec_t timer,
     ngx_uint_t flags);
@@ -44,11 +45,6 @@ int                    ngx_kqueue = -1;
 static struct kevent  *change_list;
 static struct kevent  *event_list;
 static ngx_uint_t      max_changes, nchanges, nevents;
-
-#ifdef EVFILT_USER
-static ngx_event_t     notify_event;
-static struct kevent   notify_kev;
-#endif
 
 
 static ngx_str_t      kqueue_name = ngx_string("kqueue");
@@ -86,9 +82,13 @@ ngx_event_module_t  ngx_kqueue_module_ctx = {
         NULL,                              /* add an connection */
         NULL,                              /* delete an connection */
 #ifdef EVFILT_USER
+        ngx_kqueue_notify_init,            /* init a notify */
         ngx_kqueue_notify,                 /* trigger a notify */
+        NULL,                              /* close a notify */
 #else
+        NULL,                              /* init a notify */
         NULL,                              /* trigger a notify */
+        NULL,                              /* close a notify */
 #endif
         ngx_kqueue_process_events,         /* process the events */
         ngx_kqueue_init,                   /* init the events */
@@ -132,12 +132,6 @@ ngx_kqueue_init(ngx_cycle_t *cycle, ngx_msec_t timer)
                           "kqueue() failed");
             return NGX_ERROR;
         }
-
-#ifdef EVFILT_USER
-        if (ngx_kqueue_notify_init(cycle->log) != NGX_OK) {
-            return NGX_ERROR;
-        }
-#endif
     }
 
     if (max_changes < kcf->changes) {
@@ -230,27 +224,39 @@ ngx_kqueue_init(ngx_cycle_t *cycle, ngx_msec_t timer)
 #ifdef EVFILT_USER
 
 static ngx_int_t
-ngx_kqueue_notify_init(ngx_log_t *log)
+ngx_kqueue_notify_init(ngx_event_t *notify_event, ngx_event_handler_pt handler,
+    ngx_cycle_t *cycle)
 {
-    notify_kev.ident = 0;
-    notify_kev.filter = EVFILT_USER;
-    notify_kev.data = 0;
-    notify_kev.flags = EV_ADD|EV_CLEAR;
-    notify_kev.fflags = 0;
-    notify_kev.udata = 0;
+    struct kevent  *notify_kev;
 
-    if (kevent(ngx_kqueue, &notify_kev, 1, NULL, 0, NULL) == -1) {
-        ngx_log_error(NGX_LOG_ALERT, log, ngx_errno,
+    notify_kev = ngx_pcalloc(cycle->pool, sizeof(struct kevent));
+    if (notify_kev == NULL) {
+        return NGX_ERROR;
+    }
+
+    notify_kev->ident = (uintptr_t) notify_event;
+    notify_kev->filter = EVFILT_USER;
+    notify_kev->data = 0;
+    notify_kev->flags = EV_ADD|EV_CLEAR;
+    notify_kev->fflags = 0;
+    notify_kev->udata = 0;
+
+    if (kevent(ngx_kqueue, notify_kev, 1, NULL, 0, NULL) == -1) {
+        ngx_log_error(NGX_LOG_ALERT, cycle->log, ngx_errno,
                       "kevent(EVFILT_USER, EV_ADD) failed");
         return NGX_ERROR;
     }
 
-    notify_event.active = 1;
-    notify_event.log = log;
+    ngx_memzero(notify_event, sizeof(ngx_event_t));
 
-    notify_kev.flags = 0;
-    notify_kev.fflags = NOTE_TRIGGER;
-    notify_kev.udata = NGX_KQUEUE_UDATA_T ((uintptr_t) &notify_event);
+    notify_event->data = notify_kev;
+    notify_event->handler = handler;
+    notify_event->active = 1;
+    notify_event->log = cycle->log;
+
+    notify_kev->flags = 0;
+    notify_kev->fflags = NOTE_TRIGGER;
+    notify_kev->udata = NGX_KQUEUE_UDATA_T ((uintptr_t) notify_event);
 
     return NGX_OK;
 }
@@ -478,12 +484,12 @@ ngx_kqueue_set_event(ngx_event_t *ev, ngx_int_t filter, ngx_uint_t flags)
 #ifdef EVFILT_USER
 
 static ngx_int_t
-ngx_kqueue_notify(ngx_event_handler_pt handler)
+ngx_kqueue_notify(ngx_event_t *notify_event)
 {
-    notify_event.handler = handler;
+    struct kevent  *notify_kev = notify_event->data;
 
-    if (kevent(ngx_kqueue, &notify_kev, 1, NULL, 0, NULL) == -1) {
-        ngx_log_error(NGX_LOG_ALERT, notify_event.log, ngx_errno,
+    if (kevent(ngx_kqueue, notify_kev, 1, NULL, 0, NULL) == -1) {
+        ngx_log_error(NGX_LOG_ALERT, notify_event->log, ngx_errno,
                       "kevent(EVFILT_USER, NOTE_TRIGGER) failed");
         return NGX_ERROR;
     }
