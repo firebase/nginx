@@ -62,7 +62,7 @@ ngx_shmtx_destroy(ngx_shmtx_t *mtx)
 ngx_uint_t
 ngx_shmtx_trylock(ngx_shmtx_t *mtx)
 {
-    return (*mtx->lock == 0 && ngx_atomic_cmp_set(mtx->lock, 0, ngx_pid));
+    return ngx_trylock(mtx->lock, ngx_pid);
 }
 
 
@@ -75,7 +75,7 @@ ngx_shmtx_lock(ngx_shmtx_t *mtx)
 
     for ( ;; ) {
 
-        if (*mtx->lock == 0 && ngx_atomic_cmp_set(mtx->lock, 0, ngx_pid)) {
+        if (ngx_trylock(mtx->lock, ngx_pid)) {
             return;
         }
 
@@ -87,9 +87,7 @@ ngx_shmtx_lock(ngx_shmtx_t *mtx)
                     ngx_cpu_pause();
                 }
 
-                if (*mtx->lock == 0
-                    && ngx_atomic_cmp_set(mtx->lock, 0, ngx_pid))
-                {
+                if (ngx_trylock(mtx->lock, ngx_pid)) {
                     return;
                 }
             }
@@ -100,7 +98,7 @@ ngx_shmtx_lock(ngx_shmtx_t *mtx)
         if (mtx->semaphore) {
             (void) ngx_atomic_fetch_add(mtx->wait, 1);
 
-            if (*mtx->lock == 0 && ngx_atomic_cmp_set(mtx->lock, 0, ngx_pid)) {
+            if (ngx_trylock(mtx->lock, ngx_pid)) {
                 (void) ngx_atomic_fetch_add(mtx->wait, -1);
                 return;
             }

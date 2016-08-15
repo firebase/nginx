@@ -23,7 +23,7 @@ ngx_rwlock_wlock(ngx_atomic_t *lock)
 
     for ( ;; ) {
 
-        if (*lock == 0 && ngx_atomic_cmp_set(lock, 0, NGX_RWLOCK_WLOCK)) {
+        if (ngx_trylock(lock, NGX_RWLOCK_WLOCK)) {
             return;
         }
 
@@ -35,9 +35,7 @@ ngx_rwlock_wlock(ngx_atomic_t *lock)
                     ngx_cpu_pause();
                 }
 
-                if (*lock == 0
-                    && ngx_atomic_cmp_set(lock, 0, NGX_RWLOCK_WLOCK))
-                {
+                if (ngx_trylock(lock, NGX_RWLOCK_WLOCK)) {
                     return;
                 }
             }
