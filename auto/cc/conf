@@ -176,7 +176,7 @@ if [ "$NGX_PLATFORM" != win32 ]; then
     fi
 
 
-    ngx_feature="gcc builtin atomic operations"
+    ngx_feature="gcc builtin __sync operations"
     ngx_feature_name=NGX_HAVE_GCC_ATOMIC
     ngx_feature_run=yes
     ngx_feature_incs=
@@ -190,6 +190,19 @@ if [ "$NGX_PLATFORM" != win32 ]; then
                       if (n != 2)
                           return 1;
                       __sync_synchronize();"
+    . $NGX_AUTO/feature
+
+
+    ngx_feature="gcc builtin __atomic operations"
+    ngx_feature_name=NGX_HAVE_GCC_ATOMIC_STORE_AND_LOAD
+    ngx_feature_run=yes
+    ngx_feature_incs=
+    ngx_feature_path=
+    ngx_feature_libs=
+    ngx_feature_test="long  n = 0;
+                      __atomic_store_n(&n, 1, __ATOMIC_RELEASE);
+                      if (__atomic_load_n(&n, __ATOMIC_ACQUIRE) != 1)
+                          return 1"
     . $NGX_AUTO/feature
 
 

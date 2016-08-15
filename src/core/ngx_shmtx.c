@@ -171,7 +171,7 @@ ngx_shmtx_wakeup(ngx_shmtx_t *mtx)
 
     for ( ;; ) {
 
-        wait = *mtx->wait;
+        wait = ngx_atomic_load(mtx->wait);
 
         if ((ngx_atomic_int_t) wait <= 0) {
             return;

@@ -171,9 +171,9 @@ ngx_thread_pool_init(ngx_thread_pool_t *tp, ngx_log_t *log, ngx_pool_t *pool)
 static void
 ngx_thread_pool_destroy(ngx_thread_pool_t *tp)
 {
-    ngx_uint_t           n;
-    ngx_thread_task_t    task;
-    volatile ngx_uint_t  lock;
+    ngx_uint_t         n;
+    ngx_atomic_t       lock;
+    ngx_thread_task_t  task;
 
     ngx_memzero(&task, sizeof(ngx_thread_task_t));
 
@@ -181,13 +181,13 @@ ngx_thread_pool_destroy(ngx_thread_pool_t *tp)
     task.ctx = (void *) &lock;
 
     for (n = 0; n < tp->threads; n++) {
-        lock = 1;
+        ngx_atomic_store(&lock, 1);
 
         if (ngx_thread_task_post(tp, &task) != NGX_OK) {
             return;
         }
 
-        while (lock) {
+        while (ngx_atomic_load(&lock) != 0) {
             ngx_sched_yield();
         }
 
@@ -203,9 +203,9 @@ ngx_thread_pool_destroy(ngx_thread_pool_t *tp)
 static void
 ngx_thread_pool_exit_handler(void *data, ngx_log_t *log)
 {
-    ngx_uint_t *lock = data;
+    ngx_atomic_uint_t  *lock = data;
 
-    *lock = 0;
+    ngx_atomic_store(lock, 0);
 
     pthread_exit(0);
 }

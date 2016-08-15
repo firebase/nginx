@@ -304,12 +304,25 @@ ngx_atomic_fetch_add(ngx_atomic_t *value, ngx_atomic_int_t add)
 #endif
 
 
+#if (NGX_HAVE_GCC_ATOMIC_STORE_AND_LOAD)
+
+#define ngx_atomic_store(x, value)  __atomic_store_n(x, value, __ATOMIC_RELEASE)
+#define ngx_atomic_load(x)          __atomic_load_n(x, __ATOMIC_ACQUIRE)
+
+#else
+
+#define ngx_atomic_store(x, value)  *(x) = value
+#define ngx_atomic_load(x)          *(x)
+
+#endif
+
+
 void ngx_spinlock(ngx_atomic_t *lock, ngx_atomic_int_t value, ngx_uint_t spin);
 
 #define ngx_trylock(lock, value)                                              \
-    (*(lock) == 0 && ngx_atomic_cmp_set(lock, 0, value))
+    (ngx_atomic_load(lock) == 0 && ngx_atomic_cmp_set(lock, 0, value))
 
-#define ngx_unlock(lock)    *(lock) = 0
+#define ngx_unlock(lock)    ngx_atomic_store(lock, 0)
 
 
 #endif /* _NGX_ATOMIC_H_INCLUDED_ */
