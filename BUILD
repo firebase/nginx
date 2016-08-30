@@ -1343,6 +1343,8 @@ cc_binary(
         ":stream_split_clients",
         ":stream_upstream_hash",
         ":stream_upstream_least_conn",
+        "@ngx_brotli//:http_brotli_filter",
+        "@ngx_brotli//:http_brotli_static",
     ],
 )
 
@@ -1351,6 +1353,7 @@ genrule(
     srcs = [
         ":LICENSE",
         "@boringssl//:LICENSE",
+        "@io_brotli//:LICENSE",
         "@nginx_pcre//:LICENCE",
         "@nginx_zlib//:README",
     ],
@@ -1360,9 +1363,11 @@ genrule(
     cmd = "cat $(location :LICENSE) > $(@);" +
           "echo \"\n\" >> $(@);" +
           "echo \"This NGINX binary is statically linked against:\" >> $(@);" +
-          "echo \"BoringSSL, PCRE & zlib.\" >> $(@);" +
+          "echo \"BoringSSL, Brotli, PCRE & zlib.\" >> $(@);" +
           "echo \"\n\nBoringSSL license:\n==================\n\" >> $(@);" +
           "cat $(location @boringssl//:LICENSE) >> $(@);" +
+          "echo \"\n\nBrotli license:\n===============\n\" >> $(@);" +
+          "cat $(location @io_brotli//:LICENSE) >> $(@);" +
           "echo \"\n\nPCRE license:\n=============\n\" >> $(@);" +
           "cat $(location @nginx_pcre//:LICENCE) >> $(@);" +
           "echo \"\n\nzlib license:\n=============\n\" >> $(@);" +

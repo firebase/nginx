@@ -29,4 +29,5 @@ load(":build.bzl", "nginx_repositories")
 nginx_repositories(
     bind = True,
     nginx = "@//",
+    ngx_brotli = True,
 )

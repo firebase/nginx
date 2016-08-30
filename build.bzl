@@ -45,6 +45,88 @@ nginx_cxxopts = _common_copts + [
     "-Wmissing-declarations",
 ]
 
+_NGX_BROTLI_BUILD_FILE = """
+# Copyright (C) 2015-2016 Google Inc.
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+# 1. Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+# OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+# HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+# LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+# OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+# SUCH DAMAGE.
+
+licenses(["notice"])  # BSD license
+
+exports_files(["LICENSE"])
+
+load("{nginx}:build.bzl", "nginx_copts")
+
+cc_library(
+    name = "http_brotli_filter",
+    srcs = [
+        "src/ngx_http_brotli_filter_module.c",
+    ],
+    copts = nginx_copts,
+    defines = [
+        "NGX_HTTP_BROTLI_FILTER",
+    ],
+    visibility = [
+        "//visibility:public",
+    ],
+    deps = [
+        "//external:brotli_enc",
+        "{nginx}:core",
+        "{nginx}:http",
+    ],
+)
+
+cc_library(
+    name = "http_brotli_static",
+    srcs = [
+        "src/ngx_http_brotli_static_module.c",
+    ],
+    copts = nginx_copts,
+    defines = [
+        "NGX_HTTP_BROTLI_STATIC",
+    ],
+    visibility = [
+        "//visibility:public",
+    ],
+    deps = [
+        "{nginx}:core",
+        "{nginx}:http",
+    ],
+)
+
+cc_binary(
+    name = "nginx",
+    srcs = [
+        "{nginx}:modules",
+    ],
+    copts = nginx_copts,
+    deps = [
+        ":http_brotli_filter",
+        ":http_brotli_static",
+        "{nginx}:core",
+    ],
+)
+"""
+
 _PCRE_BUILD_FILE = """
 # Copyright (C) 2015-2016 Google Inc.
 # All rights reserved.
@@ -494,6 +576,32 @@ def nginx_repositories_boringssl(bind):
             actual = "@boringssl//:ssl"
         )
 
+def nginx_repositories_brotli(bind):
+    native.git_repository(
+        name = "io_brotli",
+        commit = "5ce9bf11b3fe0924d87b2a2d47eb7a53a76a4421",  # 2016-08-29
+        remote = "https://github.com/google/brotli.git",
+    )
+
+    if bind:
+        native.bind(
+            name = "brotli_enc",
+            actual = "@io_brotli//:brotli_enc"
+        )
+
+        native.bind(
+            name = "brotli_dec",
+            actual = "@io_brotli//:brotli_dec"
+        )
+
+def nginx_repositories_ngx_brotli(nginx):
+    native.new_git_repository(
+        name = "ngx_brotli",
+        build_file_content = _NGX_BROTLI_BUILD_FILE.format(nginx = nginx),
+        commit = "01a2a6555f436f3b7ae5191d423b23a95f7d0169",  # 2016-08-26
+        remote = "https://nginx.googlesource.com/ngx_brotli",
+    )
+
 def nginx_repositories_pcre(bind):
     native.new_http_archive(
         name = "nginx_pcre",
@@ -532,7 +640,7 @@ def nginx_repositories_zlib(bind):
             actual = "@nginx_zlib//:zlib"
         )
 
-def nginx_repositories(bind = False, nginx = "@nginx//"):
+def nginx_repositories(bind = False, nginx = "@nginx//", ngx_brotli = False):
     # core dependencies
     nginx_repositories_boringssl(bind)
     nginx_repositories_pcre(bind)
@@ -540,3 +648,8 @@ def nginx_repositories(bind = False, nginx = "@nginx//"):
 
     # packaging
     nginx_repositories_pkgoss(nginx)
+
+    # ngx_brotli + dependencies
+    if ngx_brotli:
+        nginx_repositories_ngx_brotli(nginx)
+        nginx_repositories_brotli(bind)
