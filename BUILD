@@ -151,6 +151,9 @@ genrule(
           " --without-http_auth_basic_module" +
           " --without-http_upstream_zone_module" +
           " 2>&1 >$(@D)/bazel-objs/autoconf.log",
+    tools = [
+        "//tools/defaults:crosstool",
+    ],
     visibility = [
         "//visibility:private",
     ],
