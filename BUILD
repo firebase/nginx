@@ -1128,6 +1128,7 @@ cc_library(
         "src/stream/ngx_stream.c",
         "src/stream/ngx_stream_core_module.c",
         "src/stream/ngx_stream_handler.c",
+        "src/stream/ngx_stream_log_module.c",
         "src/stream/ngx_stream_proxy_module.c",
         "src/stream/ngx_stream_script.c",
         "src/stream/ngx_stream_script.h",
@@ -1149,12 +1150,14 @@ cc_library(
         "NGX_STREAM",
         "NGX_STREAM_SSL",
         "NGX_STREAM_UPSTREAM_ZONE",
+        "NGX_ZLIB",
     ],
     includes = [
         "src/stream",
     ],
     deps = [
         ":core",
+        "//external:zlib",
     ],
 )
 
@@ -1211,6 +1214,21 @@ cc_library(
     copts = nginx_copts,
     defines = [
         "NGX_STREAM_MAP",
+    ],
+    deps = [
+        ":core",
+        ":stream",
+    ],
+)
+
+cc_library(
+    name = "stream_realip",
+    srcs = [
+        "src/stream/ngx_stream_realip_module.c",
+    ],
+    copts = nginx_copts,
+    defines = [
+        "NGX_STREAM_REALIP",
     ],
     deps = [
         ":core",
@@ -1342,6 +1360,7 @@ cc_binary(
         ":stream_geo",
         ":stream_limit_conn",
         ":stream_map",
+        ":stream_realip",
         ":stream_return",
         ":stream_split_clients",
         ":stream_upstream_hash",
@@ -1424,5 +1443,5 @@ pkg_deb(
     preinst = "@nginx_pkgoss//:debian_preinst",
     prerm = "@nginx_pkgoss//:debian_prerm",
     section = "httpd",
-    version = "1.11.3",
+    version = "1.11.4",
 )
