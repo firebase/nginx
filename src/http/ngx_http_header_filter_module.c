@@ -383,7 +383,7 @@ ngx_http_header_filter(ngx_http_request_t *r)
         len += sizeof("Connection: close" CRLF) - 1;
     }
 
-#if (NGX_HTTP_GZIP)
+#if (NGX_HTTP_GZIP || NGX_COMPAT)
     if (r->gzip_vary) {
         if (clcf->gzip_vary) {
             len += sizeof("Vary: Accept-Encoding" CRLF) - 1;
@@ -551,7 +551,7 @@ ngx_http_header_filter(ngx_http_request_t *r)
                              sizeof("Connection: close" CRLF) - 1);
     }
 
-#if (NGX_HTTP_GZIP)
+#if (NGX_HTTP_GZIP || NGX_COMPAT)
     if (r->gzip_vary) {
         b->last = ngx_cpymem(b->last, "Vary: Accept-Encoding" CRLF,
                              sizeof("Vary: Accept-Encoding" CRLF) - 1);

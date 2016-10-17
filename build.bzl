@@ -312,20 +312,48 @@ filegroup(
     ],
 )
 
+genrule(
+    name = "debian_nginx_postinst",
+    srcs = [
+        "debian/nginx.postinst",
+    ],
+    outs = [
+        "nginx.postinst",
+    ],
+    cmd = "sed -e 's|#DEBHELPER#|" +
+          "if [ -x \\"/etc/init.d/nginx\\" ]; then\\\\n" +
+          "\\\\tupdate-rc.d nginx defaults >/dev/null \\|\\| exit $$?\\\\n" +
+          "fi\\\\n" +
+          "|g'" +
+          " < $(<) > $(@)",
+)
+
 filegroup(
     name = "debian_postinst",
     srcs = [
-        "debian/nginx.postinst",
+        "nginx.postinst",
     ],
     visibility = [
         "//visibility:public",
     ],
 )
 
+genrule(
+    name = "debian_nginx_prerm",
+    srcs = [
+        "debian/nginx.prerm",
+    ],
+    outs = [
+        "nginx.prerm",
+    ],
+    cmd = "sed -e 's|#DEBHELPER#||g'" +
+          " < $(<) > $(@)",
+)
+
 filegroup(
     name = "debian_prerm",
     srcs = [
-        "debian/nginx.prerm",
+        "nginx.prerm",
     ],
     visibility = [
         "//visibility:public",
@@ -342,11 +370,11 @@ genrule(
     ],
     cmd = "sed -e 's|#DEBHELPER#|" +
           "if [ \\"$$1\\" = \\"purge\\" ] ; then\\\\n" +
-          "    update-rc.d nginx remove >/dev/null\\\\n" +
+          "\\\\tupdate-rc.d nginx remove >/dev/null\\\\n" +
           "fi\\\\n" +
           "\\\\n" +
           "if [ -d /run/systemd/system ] ; then\\\\n" +
-          "    systemctl --system daemon-reload >/dev/null \\|\\| true\\\\n" +
+          "\\\\tsystemctl --system daemon-reload >/dev/null \\|\\| true\\\\n" +
           "fi\\\\n" +
           "|g'" +
           " < $(<) > $(@)",
@@ -376,7 +404,7 @@ genrule(
 genrule(
     name = "debian_etc_init_d_nginx",
     srcs = [
-        "debian/init.d.in",
+        "debian/nginx.init.in",
     ],
     outs = [
         "etc/init.d/nginx",
@@ -390,7 +418,7 @@ genrule(
 genrule(
     name = "debian_etc_logrotate_d_nginx",
     srcs = [
-        "debian/logrotate",
+        "debian/nginx.logrotate",
     ],
     outs = [
         "etc/logrotate.d/nginx",
@@ -446,6 +474,15 @@ pkg_tar(
 )
 
 pkg_tar(
+    name = "debian_usr_share_man_man8",
+    files = [
+        "{nginx}:nginx.8",
+    ],
+    mode = "0644",
+    package_dir = "/usr/share/man/man8",
+)
+
+pkg_tar(
     name = "debian_usr_share_nginx_html",
     files = [
         "{nginx}:html_files",
@@ -485,6 +522,7 @@ pkg_tar(
     ],
     deps = [
         ":debian_etc_nginx",
+        ":debian_usr_share_man_man8",
         ":debian_usr_share_nginx_html",
         ":debian_var",
     ],
@@ -622,7 +660,7 @@ def nginx_repositories_pkgoss(nginx):
         name = "nginx_pkgoss",
         build_file_content = _PKGOSS_BUILD_FILE.format(nginx = nginx) +
                              _PKGOSS_BUILD_FILE_TAIL,
-        commit = "3c0dbb4f0b2d273a419f42c17cb60b80e2bf7e2e",  # nginx-1.11.4
+        commit = "842c192fdab7037c0b099ed6c290daa00e9c0cd5",  # nginx-1.11.5
         remote = "https://nginx.googlesource.com/nginx-pkgoss",
     )
 

@@ -27,6 +27,7 @@ struct ngx_stream_upstream_rr_peer_s {
     ngx_int_t                        weight;
 
     ngx_uint_t                       conns;
+    ngx_uint_t                       max_conns;
 
     ngx_uint_t                       fails;
     time_t                           accessed;
@@ -34,19 +35,22 @@ struct ngx_stream_upstream_rr_peer_s {
 
     ngx_uint_t                       max_fails;
     time_t                           fail_timeout;
+    ngx_msec_t                       slow_start;
+    ngx_msec_t                       start_time;
 
-    ngx_uint_t                       down;         /* unsigned  down:1; */
+    ngx_uint_t                       down;
 
-#if (NGX_STREAM_SSL)
     void                            *ssl_session;
     int                              ssl_session_len;
+
+#if (NGX_STREAM_UPSTREAM_ZONE || NGX_COMPAT)
+    ngx_atomic_t                     lock;
 #endif
 
     ngx_stream_upstream_rr_peer_t   *next;
 
-#if (NGX_STREAM_UPSTREAM_ZONE)
-    ngx_atomic_t                     lock;
-#endif
+    NGX_COMPAT_BEGIN(25)
+    NGX_COMPAT_END
 };
 
 
@@ -55,7 +59,7 @@ typedef struct ngx_stream_upstream_rr_peers_s  ngx_stream_upstream_rr_peers_t;
 struct ngx_stream_upstream_rr_peers_s {
     ngx_uint_t                       number;
 
-#if (NGX_STREAM_UPSTREAM_ZONE)
+#if (NGX_STREAM_UPSTREAM_ZONE || NGX_COMPAT)
     ngx_slab_pool_t                 *shpool;
     ngx_atomic_t                     rwlock;
     ngx_stream_upstream_rr_peers_t  *zone_next;
@@ -74,7 +78,7 @@ struct ngx_stream_upstream_rr_peers_s {
 };
 
 
-#if (NGX_STREAM_UPSTREAM_ZONE)
+#if (NGX_STREAM_UPSTREAM_ZONE || NGX_COMPAT)
 
 #define ngx_stream_upstream_rr_peers_rlock(peers)                             \
                                                                               \
@@ -119,6 +123,7 @@ struct ngx_stream_upstream_rr_peers_s {
 
 
 typedef struct {
+    ngx_uint_t                       config;
     ngx_stream_upstream_rr_peers_t  *peers;
     ngx_stream_upstream_rr_peer_t   *current;
     uintptr_t                       *tried;

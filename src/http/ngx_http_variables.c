@@ -165,12 +165,12 @@ static ngx_http_variable_t  ngx_http_core_variables[] = {
     { ngx_string("http_referer"), NULL, ngx_http_variable_header,
       offsetof(ngx_http_request_t, headers_in.referer), 0, 0 },
 
-#if (NGX_HTTP_GZIP)
+#if (NGX_HTTP_GZIP || NGX_COMPAT)
     { ngx_string("http_via"), NULL, ngx_http_variable_header,
       offsetof(ngx_http_request_t, headers_in.via), 0, 0 },
 #endif
 
-#if (NGX_HTTP_X_FORWARDED_FOR)
+#if (NGX_HTTP_X_FORWARDED_FOR || NGX_COMPAT)
     { ngx_string("http_x_forwarded_for"), NULL, ngx_http_variable_headers,
       offsetof(ngx_http_request_t, headers_in.x_forwarded_for), 0, 0 },
 #endif

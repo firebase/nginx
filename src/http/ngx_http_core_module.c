@@ -73,7 +73,7 @@ static char *ngx_http_core_internal(ngx_conf_t *cf, ngx_command_t *cmd,
     void *conf);
 static char *ngx_http_core_resolver(ngx_conf_t *cf, ngx_command_t *cmd,
     void *conf);
-#if (NGX_HTTP_GZIP)
+#if (NGX_HTTP_GZIP || NGX_COMPAT)
 static ngx_int_t ngx_http_gzip_accept_encoding(ngx_str_t *ae);
 static ngx_uint_t ngx_http_gzip_quantity(u_char *p, u_char *last);
 static char *ngx_http_gzip_disable(ngx_conf_t *cf, ngx_command_t *cmd,
@@ -141,7 +141,7 @@ static ngx_path_init_t  ngx_http_client_temp_path = {
 };
 
 
-#if (NGX_HTTP_GZIP)
+#if (NGX_HTTP_GZIP || NGX_COMPAT)
 
 static ngx_conf_enum_t  ngx_http_gzip_http_version[] = {
     { ngx_string("1.0"), NGX_HTTP_VERSION_10 },
@@ -705,7 +705,7 @@ static ngx_command_t  ngx_http_core_commands[] = {
       offsetof(ngx_http_core_loc_conf_t, resolver_timeout),
       NULL },
 
-#if (NGX_HTTP_GZIP)
+#if (NGX_HTTP_GZIP || NGX_COMPAT)
 
     { ngx_string("gzip_vary"),
       NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_HTTP_LOC_CONF|NGX_CONF_FLAG,
@@ -818,7 +818,7 @@ ngx_http_handler(ngx_http_request_t *r)
     }
 
     r->valid_location = 1;
-#if (NGX_HTTP_GZIP)
+#if (NGX_HTTP_GZIP || NGX_COMPAT)
     r->gzip_tested = 0;
     r->gzip_ok = 0;
     r->gzip_vary = 0;
@@ -2121,7 +2121,7 @@ ngx_http_auth_basic_user(ngx_http_request_t *r)
 }
 
 
-#if (NGX_HTTP_GZIP)
+#if (NGX_HTTP_GZIP || NGX_COMPAT)
 
 ngx_int_t
 ngx_http_gzip_ok(ngx_http_request_t *r)
@@ -3582,7 +3582,7 @@ ngx_http_core_create_loc_conf(ngx_conf_t *cf)
     clcf->open_file_cache_errors = NGX_CONF_UNSET;
     clcf->open_file_cache_events = NGX_CONF_UNSET;
 
-#if (NGX_HTTP_GZIP)
+#if (NGX_HTTP_GZIP || NGX_COMPAT)
     clcf->gzip_vary = NGX_CONF_UNSET;
     clcf->gzip_http_version = NGX_CONF_UNSET_UINT;
 #if (NGX_PCRE)
@@ -3760,10 +3760,8 @@ ngx_http_core_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child)
     ngx_conf_merge_value(conf->sendfile, prev->sendfile, 0);
     ngx_conf_merge_size_value(conf->sendfile_max_chunk,
                               prev->sendfile_max_chunk, 0);
-#if (NGX_HAVE_FILE_AIO || NGX_THREADS)
     ngx_conf_merge_value(conf->aio, prev->aio, NGX_HTTP_AIO_OFF);
     ngx_conf_merge_value(conf->aio_write, prev->aio_write, 0);
-#endif
 #if (NGX_THREADS)
     ngx_conf_merge_ptr_value(conf->thread_pool, prev->thread_pool, NULL);
     ngx_conf_merge_ptr_value(conf->thread_pool_value, prev->thread_pool_value,
@@ -3855,7 +3853,7 @@ ngx_http_core_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child)
 
     ngx_conf_merge_sec_value(conf->open_file_cache_events,
                               prev->open_file_cache_events, 0);
-#if (NGX_HTTP_GZIP)
+#if (NGX_HTTP_GZIP || NGX_COMPAT)
 
     ngx_conf_merge_value(conf->gzip_vary, prev->gzip_vary, 0);
     ngx_conf_merge_uint_value(conf->gzip_http_version, prev->gzip_http_version,
@@ -3939,7 +3937,7 @@ ngx_http_core_listen(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
     lsopt.fastopen = -1;
 #endif
     lsopt.wildcard = u.wildcard;
-#if (NGX_HAVE_INET6 && defined IPV6_V6ONLY)
+#if (NGX_HAVE_INET6)
     lsopt.ipv6only = 1;
 #endif
 
@@ -5082,7 +5080,7 @@ ngx_http_core_resolver(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
 }
 
 
-#if (NGX_HTTP_GZIP)
+#if (NGX_HTTP_GZIP || NGX_COMPAT)
 
 static char *
 ngx_http_gzip_disable(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)

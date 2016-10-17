@@ -238,6 +238,7 @@ extern ngx_module_t  ngx_stream_core_module;
 extern ngx_module_t  ngx_stream_log_module;
 extern ngx_module_t  ngx_stream_proxy_module;
 extern ngx_module_t  ngx_stream_upstream_module;
+extern ngx_module_t  ngx_stream_write_filter_module;
 #endif
 #if (NGX_STREAM_SSL)
 extern ngx_module_t  ngx_stream_ssl_module;
@@ -271,6 +272,9 @@ extern ngx_module_t  ngx_stream_upstream_least_conn_module;
 #endif
 #if (NGX_STREAM_UPSTREAM_ZONE)
 extern ngx_module_t  ngx_stream_upstream_zone_module;
+#endif
+#if (NGX_STREAM_SSL_PREREAD)
+extern ngx_module_t  ngx_stream_ssl_preread_module;
 #endif
 
 #if 0
@@ -508,6 +512,7 @@ ngx_module_t *ngx_modules[] = {
     &ngx_stream_log_module,
     &ngx_stream_proxy_module,
     &ngx_stream_upstream_module,
+    &ngx_stream_write_filter_module,
 #endif
 #if (NGX_STREAM_SSL)
     &ngx_stream_ssl_module,
@@ -541,6 +546,9 @@ ngx_module_t *ngx_modules[] = {
 #endif
 #if (NGX_STREAM_UPSTREAM_ZONE)
     &ngx_stream_upstream_zone_module,
+#endif
+#if (NGX_STREAM_SSL_PREREAD)
+    &ngx_stream_ssl_preread_module,
 #endif
 
 #if 0
@@ -780,6 +788,7 @@ char *ngx_module_names[] = {
     "ngx_stream_log_module",
     "ngx_stream_proxy_module",
     "ngx_stream_upstream_module",
+    "ngx_stream_write_filter_module",
 #endif
 #if (NGX_STREAM_SSL)
     "ngx_stream_ssl_module",
@@ -813,6 +822,9 @@ char *ngx_module_names[] = {
 #endif
 #if (NGX_STREAM_UPSTREAM_ZONE)
     "ngx_stream_upstream_zone_module",
+#endif
+#if (NGX_STREAM_SSL_PREREAD)
+    "ngx_stream_ssl_preread_module",
 #endif
 
 #if 0
@@ -877,9 +889,6 @@ ngx_show_configure_options(void)
 #endif
 #if (NGX_HAVE_FILE_AIO)
     ngx_write_stderr(" --with-file-aio");
-#endif
-#if (NGX_HAVE_INET6)
-    ngx_write_stderr(" --with-ipv6");
 #endif
 #if (NGX_THREADS)
     ngx_write_stderr(" --with-threads");
@@ -1060,6 +1069,9 @@ ngx_show_configure_options(void)
 #endif
 #if (NGX_STREAM_SSL)
     ngx_write_stderr(" --with-stream_ssl_module");
+#endif
+#if (NGX_STREAM_SSL_PREREAD)
+    ngx_write_stderr(" --with-stream_ssl_preread_module");
 #endif
 #if !(NGX_STREAM_ACCESS)
     ngx_write_stderr(" --without-stream_access_module");

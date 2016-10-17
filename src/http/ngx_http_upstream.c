@@ -146,7 +146,7 @@ static ngx_int_t ngx_http_upstream_rewrite_set_cookie(ngx_http_request_t *r,
 static ngx_int_t ngx_http_upstream_copy_allow_ranges(ngx_http_request_t *r,
     ngx_table_elt_t *h, ngx_uint_t offset);
 
-#if (NGX_HTTP_GZIP)
+#if (NGX_HTTP_GZIP || NGX_COMPAT)
 static ngx_int_t ngx_http_upstream_copy_content_encoding(ngx_http_request_t *r,
     ngx_table_elt_t *h, ngx_uint_t offset);
 #endif
@@ -303,7 +303,7 @@ ngx_http_upstream_header_t  ngx_http_upstream_headers_in[] = {
                  ngx_http_upstream_process_transfer_encoding, 0,
                  ngx_http_upstream_ignore_header_line, 0, 0 },
 
-#if (NGX_HTTP_GZIP)
+#if (NGX_HTTP_GZIP || NGX_COMPAT)
     { ngx_string("Content-Encoding"),
                  ngx_http_upstream_process_header_line,
                  offsetof(ngx_http_upstream_headers_in_t, content_encoding),
@@ -747,6 +747,8 @@ found:
                                            NGX_HTTP_INTERNAL_SERVER_ERROR);
         return;
     }
+
+    u->upstream = uscf;
 
 #if (NGX_HTTP_SSL)
     u->ssl_name = uscf->host;
@@ -4971,7 +4973,7 @@ ngx_http_upstream_copy_allow_ranges(ngx_http_request_t *r,
 }
 
 
-#if (NGX_HTTP_GZIP)
+#if (NGX_HTTP_GZIP || NGX_COMPAT)
 
 static ngx_int_t
 ngx_http_upstream_copy_content_encoding(ngx_http_request_t *r,
@@ -5444,6 +5446,7 @@ ngx_http_upstream(ngx_conf_t *cf, ngx_command_t *cmd, void *dummy)
 
     uscf = ngx_http_upstream_add(cf, &u, NGX_HTTP_UPSTREAM_CREATE
                                          |NGX_HTTP_UPSTREAM_WEIGHT
+                                         |NGX_HTTP_UPSTREAM_MAX_CONNS
                                          |NGX_HTTP_UPSTREAM_MAX_FAILS
                                          |NGX_HTTP_UPSTREAM_FAIL_TIMEOUT
                                          |NGX_HTTP_UPSTREAM_DOWN
@@ -5545,7 +5548,7 @@ ngx_http_upstream_server(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
     time_t                       fail_timeout;
     ngx_str_t                   *value, s;
     ngx_url_t                    u;
-    ngx_int_t                    weight, max_fails;
+    ngx_int_t                    weight, max_conns, max_fails;
     ngx_uint_t                   i;
     ngx_http_upstream_server_t  *us;
 
@@ -5559,6 +5562,7 @@ ngx_http_upstream_server(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
     value = cf->args->elts;
 
     weight = 1;
+    max_conns = 0;
     max_fails = 1;
     fail_timeout = 10;
 
@@ -5573,6 +5577,21 @@ ngx_http_upstream_server(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
             weight = ngx_atoi(&value[i].data[7], value[i].len - 7);
 
             if (weight == NGX_ERROR || weight == 0) {
+                goto invalid;
+            }
+
+            continue;
+        }
+
+        if (ngx_strncmp(value[i].data, "max_conns=", 10) == 0) {
+
+            if (!(uscf->flags & NGX_HTTP_UPSTREAM_MAX_CONNS)) {
+                goto not_supported;
+            }
+
+            max_conns = ngx_atoi(&value[i].data[10], value[i].len - 10);
+
+            if (max_conns == NGX_ERROR) {
                 goto invalid;
             }
 
@@ -5655,6 +5674,7 @@ ngx_http_upstream_server(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
     us->addrs = u.addrs;
     us->naddrs = u.naddrs;
     us->weight = weight;
+    us->max_conns = max_conns;
     us->max_fails = max_fails;
     us->fail_timeout = fail_timeout;
 
@@ -5719,14 +5739,14 @@ ngx_http_upstream_add(ngx_conf_t *cf, ngx_url_t *u, ngx_uint_t flags)
         }
 
         if ((uscfp[i]->flags & NGX_HTTP_UPSTREAM_CREATE) && !u->no_port) {
-            ngx_conf_log_error(NGX_LOG_WARN, cf, 0,
+            ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
                                "upstream \"%V\" may not have port %d",
                                &u->host, u->port);
             return NULL;
         }
 
         if ((flags & NGX_HTTP_UPSTREAM_CREATE) && !uscfp[i]->no_port) {
-            ngx_log_error(NGX_LOG_WARN, cf->log, 0,
+            ngx_log_error(NGX_LOG_EMERG, cf->log, 0,
                           "upstream \"%V\" may not have port %d in %s:%ui",
                           &u->host, uscfp[i]->port,
                           uscfp[i]->file_name, uscfp[i]->line);

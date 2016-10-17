@@ -142,7 +142,7 @@ ngx_http_v2_header_filter(ngx_http_request_t *r)
     u_char                     addr[NGX_SOCKADDR_STRLEN];
 
     static const u_char nginx[5] = "\x84\xaa\x63\x55\xe7";
-#if (NGX_HTTP_GZIP)
+#if (NGX_HTTP_GZIP || NGX_COMPAT)
     static const u_char accept_encoding[12] =
         "\x8b\x84\x84\x2d\x69\x5b\x05\x44\x3c\x86\xaa\x6f";
 #endif
@@ -341,7 +341,7 @@ ngx_http_v2_header_filter(ngx_http_request_t *r)
 
     tmp_len = len;
 
-#if (NGX_HTTP_GZIP)
+#if (NGX_HTTP_GZIP || NGX_COMPAT)
     if (r->gzip_vary) {
         if (clcf->gzip_vary) {
             len += 1 + sizeof(accept_encoding);
@@ -529,7 +529,7 @@ ngx_http_v2_header_filter(ngx_http_request_t *r)
                                       r->headers_out.location->value.len, tmp);
     }
 
-#if (NGX_HTTP_GZIP)
+#if (NGX_HTTP_GZIP || NGX_COMPAT)
     if (r->gzip_vary) {
         ngx_log_debug0(NGX_LOG_DEBUG_HTTP, fc->log, 0,
                        "http2 output header: \"vary: Accept-Encoding\"");

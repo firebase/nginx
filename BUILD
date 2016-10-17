@@ -145,7 +145,6 @@ genrule(
           " --http-proxy-temp-path=/var/cache/nginx/proxy_temp" +
           " --http-scgi-temp-path=/var/cache/nginx/scgi_temp" +
           " --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp" +
-          " --with-ipv6" +
           " --without-http" +
           " --without-http-cache" +
           " --without-http_auth_basic_module" +
@@ -157,6 +156,21 @@ genrule(
     visibility = [
         "//visibility:private",
     ],
+)
+
+genrule(
+    name = "nginx_8",
+    srcs = [
+        "docs/man/nginx.8",
+    ],
+    outs = [
+        "nginx.8",
+    ],
+    cmd = "sed -e 's|%%PREFIX%%|/etc/nginx|g'" +
+          " -e 's|%%CONF_PATH%%|/etc/nginx/nginx.conf|g'" +
+          " -e 's|%%ERROR_LOG_PATH%%|/var/log/nginx/error.log|g'" +
+          " -e 's|%%PID_PATH%%|/var/run/nginx.pid|g'" +
+          " < $(<) > $(@)",
 )
 
 cc_library(
@@ -278,6 +292,7 @@ cc_library(
         "src/os/unix/ngx_time.h",
         "src/os/unix/ngx_udp_recv.c",
         "src/os/unix/ngx_udp_send.c",
+        "src/os/unix/ngx_udp_sendmsg_chain.c",
         "src/os/unix/ngx_user.c",
         "src/os/unix/ngx_user.h",
         "src/os/unix/ngx_writev_chain.c",
@@ -321,6 +336,7 @@ cc_library(
     copts = nginx_copts,
     defines = [
         "NGX_BAZEL",
+        "NGX_COMPAT",
         "NGX_CRYPT",
         "NGX_HAVE_POLL",
         "NGX_HAVE_SELECT",
@@ -1141,6 +1157,7 @@ cc_library(
         "src/stream/ngx_stream_upstream_zone_module.c",
         "src/stream/ngx_stream_variables.c",
         "src/stream/ngx_stream_variables.h",
+        "src/stream/ngx_stream_write_filter_module.c",
     ],
     hdrs = [
         "src/stream/ngx_stream.h",
@@ -1267,6 +1284,21 @@ cc_library(
 )
 
 cc_library(
+    name = "stream_ssl_preread",
+    srcs = [
+        "src/stream/ngx_stream_ssl_preread_module.c",
+    ],
+    copts = nginx_copts,
+    defines = [
+        "NGX_STREAM_SSL_PREREAD",
+    ],
+    deps = [
+        ":core",
+        ":stream",
+    ],
+)
+
+cc_library(
     name = "stream_upstream_hash",
     srcs = [
         "src/stream/ngx_stream_upstream_hash_module.c",
@@ -1363,6 +1395,7 @@ cc_binary(
         ":stream_realip",
         ":stream_return",
         ":stream_split_clients",
+        ":stream_ssl_preread",
         ":stream_upstream_hash",
         ":stream_upstream_least_conn",
         "@ngx_brotli//:http_brotli_filter",
@@ -1443,5 +1476,5 @@ pkg_deb(
     preinst = "@nginx_pkgoss//:debian_preinst",
     prerm = "@nginx_pkgoss//:debian_prerm",
     section = "httpd",
-    version = "1.11.4",
+    version = "1.11.5",
 )

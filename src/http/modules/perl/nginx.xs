@@ -264,7 +264,7 @@ header_in(r, key)
             sep = ';';
             goto multi;
         }
-#if (NGX_HTTP_X_FORWARDED_FOR)
+#if (NGX_HTTP_X_FORWARDED_FOR || NGX_COMPAT)
         if (hh->offset == offsetof(ngx_http_headers_in_t, x_forwarded_for)) {
             sep = ',';
             goto multi;

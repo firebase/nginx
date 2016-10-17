@@ -143,7 +143,7 @@ ngx_http_header_t  ngx_http_headers_in[] = {
                  offsetof(ngx_http_headers_in_t, upgrade),
                  ngx_http_process_header_line },
 
-#if (NGX_HTTP_GZIP)
+#if (NGX_HTTP_GZIP || NGX_COMPAT)
     { ngx_string("Accept-Encoding"),
                  offsetof(ngx_http_headers_in_t, accept_encoding),
                  ngx_http_process_header_line },
@@ -159,19 +159,19 @@ ngx_http_header_t  ngx_http_headers_in[] = {
     { ngx_string("Keep-Alive"), offsetof(ngx_http_headers_in_t, keep_alive),
                  ngx_http_process_header_line },
 
-#if 1
+#if (NGX_HTTP_X_FORWARDED_FOR || NGX_COMPAT)
     { ngx_string("X-Forwarded-For"),
                  offsetof(ngx_http_headers_in_t, x_forwarded_for),
                  ngx_http_process_multi_header_lines },
 #endif
 
-#if 1
+#if (NGX_HTTP_REALIP || NGX_COMPAT)
     { ngx_string("X-Real-IP"),
                  offsetof(ngx_http_headers_in_t, x_real_ip),
                  ngx_http_process_header_line },
 #endif
 
-#if 1
+#if (NGX_HTTP_HEADERS || NGX_COMPAT)
     { ngx_string("Accept"), offsetof(ngx_http_headers_in_t, accept),
                  ngx_http_process_header_line },
 
@@ -180,7 +180,7 @@ ngx_http_header_t  ngx_http_headers_in[] = {
                  ngx_http_process_header_line },
 #endif
 
-#if 1
+#if (NGX_HTTP_DAV || NGX_COMPAT)
     { ngx_string("Depth"), offsetof(ngx_http_headers_in_t, depth),
                  ngx_http_process_header_line },
 
