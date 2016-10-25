@@ -884,6 +884,9 @@ ngx_show_configure_options(void)
 #endif
 #endif
 
+#if (NGX_COMPAT)
+    ngx_write_stderr(" --with-compat");
+#endif
 #if (NGX_DEBUG)
     ngx_write_stderr(" --with-debug");
 #endif
@@ -893,6 +896,7 @@ ngx_show_configure_options(void)
 #if (NGX_THREADS)
     ngx_write_stderr(" --with-threads");
 #endif
+
 #if (NGX_HAVE_POLL)
     ngx_write_stderr(" --with-poll_module");
 #endif
