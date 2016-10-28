@@ -77,6 +77,13 @@ filegroup(
     ],
 )
 
+filegroup(
+    name = "man_sources",
+    srcs = [
+        "docs/man/nginx.8",
+    ],
+)
+
 genrule(
     name = "configure",
     srcs = [
@@ -156,21 +163,6 @@ genrule(
     visibility = [
         "//visibility:private",
     ],
-)
-
-genrule(
-    name = "nginx_8",
-    srcs = [
-        "docs/man/nginx.8",
-    ],
-    outs = [
-        "nginx.8",
-    ],
-    cmd = "sed -e 's|%%PREFIX%%|/etc/nginx|g'" +
-          " -e 's|%%CONF_PATH%%|/etc/nginx/nginx.conf|g'" +
-          " -e 's|%%ERROR_LOG_PATH%%|/var/log/nginx/error.log|g'" +
-          " -e 's|%%PID_PATH%%|/var/run/nginx.pid|g'" +
-          " < $(<) > $(@)",
 )
 
 cc_library(

@@ -449,6 +449,21 @@ genrule(
 )
 
 genrule(
+    name = "debian_usr_share_man_man8_nginx_8",
+    srcs = [
+        "{nginx}:docs/man/nginx.8",
+    ],
+    outs = [
+        "usr/share/man/man8/nginx.8",
+    ],
+    cmd = "sed -e 's|%%PREFIX%%|/etc/nginx|g'" +
+          " -e 's|%%CONF_PATH%%|/etc/nginx/nginx.conf|g'" +
+          " -e 's|%%ERROR_LOG_PATH%%|/var/log/nginx/error.log|g'" +
+          " -e 's|%%PID_PATH%%|/var/run/nginx.pid|g'" +
+          " < $(<) > $(@)",
+)
+
+genrule(
     name = "debian_var_cache_nginx",
     outs = [
         "var/cache/nginx/.empty",
@@ -471,15 +486,6 @@ pkg_tar(
     ],
     mode = "0644",
     package_dir = "/etc/nginx",
-)
-
-pkg_tar(
-    name = "debian_usr_share_man_man8",
-    files = [
-        "{nginx}:nginx.8",
-    ],
-    mode = "0644",
-    package_dir = "/usr/share/man/man8",
 )
 
 pkg_tar(
@@ -511,6 +517,7 @@ pkg_tar(
         "etc/logrotate.d/nginx",
         "etc/nginx/conf.d/default.conf",
         "etc/nginx/nginx.conf",
+        "usr/share/man/man8/nginx.8",
     ],
     mode = "0644",
     modes = {
@@ -522,7 +529,6 @@ pkg_tar(
     ],
     deps = [
         ":debian_etc_nginx",
-        ":debian_usr_share_man_man8",
         ":debian_usr_share_nginx_html",
         ":debian_var",
     ],
