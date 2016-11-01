@@ -4,7 +4,7 @@
 
 ## Building
 
-To build `nginx` binary with [Bazel](https://bazel.io):
+To build `nginx` binary with [Bazel](https://bazel.build):
 
     $ bazel build :nginx
 
