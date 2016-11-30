@@ -1,10 +1,10 @@
 ## About
 
-[NGINX](https://nginx.org) + [BoringSSL](https://boringssl.googlesource.com/boringssl) + [Brotli](https://github.com/google/brotli).
+[NGINX] + [BoringSSL] + [Brotli].
 
 ## Building
 
-To build `nginx` binary with [Bazel](https://bazel.build):
+To build `nginx` binary with [Bazel]:
 
     $ bazel build :nginx
 
@@ -16,7 +16,8 @@ To build Debian package:
 
 This repository is currently maintained by Google developers.
 
-Any code changes should be submitted to upstream [NGINX](https://nginx.org/en/docs/contributing_changes.html).
+Any code changes should be submitted to upstream
+[NGINX](https://nginx.org/en/docs/contributing_changes.html).
 
 ## License
 
@@ -24,7 +25,7 @@ Any code changes should be submitted to upstream [NGINX](https://nginx.org/en/do
     Copyright (C) 2011-2016 Nginx, Inc.
     Copyright (C) 2015-2016 Google Inc.
     All rights reserved.
-    
+
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions
     are met:
@@ -33,7 +34,7 @@ Any code changes should be submitted to upstream [NGINX](https://nginx.org/en/do
     2. Redistributions in binary form must reproduce the above copyright
        notice, this list of conditions and the following disclaimer in the
        documentation and/or other materials provided with the distribution.
-    
+
     THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
     ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
     IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -49,3 +50,8 @@ Any code changes should be submitted to upstream [NGINX](https://nginx.org/en/do
 ## Disclaimer
 
 This is not an official Google product.
+
+[NGINX]: https://nginx.org
+[BoringSSL]: https://boringssl.googlesource.com/boringssl
+[Brotli]: https://github.com/google/brotli
+[Bazel]: https://bazel.build
