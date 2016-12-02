@@ -1400,9 +1400,9 @@ genrule(
     srcs = [
         ":LICENSE",
         "@boringssl//:LICENSE",
-        "@io_brotli//:LICENSE",
         "@nginx_pcre//:LICENCE",
         "@nginx_zlib//:README",
+        "@org_brotli//:LICENSE",
     ],
     outs = [
         "usr/share/doc/nginx-google/copyright",
@@ -1414,7 +1414,7 @@ genrule(
           "echo \"\n\nBoringSSL license:\n==================\n\" >> $(@);" +
           "cat $(location @boringssl//:LICENSE) >> $(@);" +
           "echo \"\n\nBrotli license:\n===============\n\" >> $(@);" +
-          "cat $(location @io_brotli//:LICENSE) >> $(@);" +
+          "cat $(location @org_brotli//:LICENSE) >> $(@);" +
           "echo \"\n\nPCRE license:\n=============\n\" >> $(@);" +
           "cat $(location @nginx_pcre//:LICENCE) >> $(@);" +
           "echo \"\n\nzlib license:\n=============\n\" >> $(@);" +

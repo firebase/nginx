@@ -81,7 +81,9 @@ cc_library(
     srcs = [
         "src/ngx_http_brotli_filter_module.c",
     ],
-    copts = nginx_copts,
+    copts = nginx_copts + [
+        "-Wno-deprecated-declarations",
+    ],
     defines = [
         "NGX_HTTP_BROTLI_FILTER",
     ],
@@ -622,27 +624,27 @@ def nginx_repositories_boringssl(bind):
 
 def nginx_repositories_brotli(bind):
     native.git_repository(
-        name = "io_brotli",
-        commit = "5ce9bf11b3fe0924d87b2a2d47eb7a53a76a4421",  # 2016-08-29
+        name = "org_brotli",
+        commit = "222564a95d9ab58865a096b8d9f7324ea5f2e03e",  # 2016-12-02
         remote = "https://github.com/google/brotli.git",
     )
 
     if bind:
         native.bind(
             name = "brotli_enc",
-            actual = "@io_brotli//:brotli_enc"
+            actual = "@org_brotli//:brotlienc"
         )
 
         native.bind(
             name = "brotli_dec",
-            actual = "@io_brotli//:brotli_dec"
+            actual = "@org_brotli//:brotlidec"
         )
 
 def nginx_repositories_ngx_brotli(nginx):
     native.new_git_repository(
         name = "ngx_brotli",
         build_file_content = _NGX_BROTLI_BUILD_FILE.format(nginx = nginx),
-        commit = "01a2a6555f436f3b7ae5191d423b23a95f7d0169",  # 2016-08-26
+        commit = "5ead1ada782b18c7b38a3c2798a40a334801c7b6",  # 2016-12-05
         remote = "https://nginx.googlesource.com/ngx_brotli",
     )
 
