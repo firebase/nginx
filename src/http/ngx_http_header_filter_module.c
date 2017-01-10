@@ -313,7 +313,8 @@ ngx_http_header_filter(ngx_http_request_t *r)
 
     if (r->headers_out.location
         && r->headers_out.location->value.len
-        && r->headers_out.location->value.data[0] == '/')
+        && r->headers_out.location->value.data[0] == '/'
+        && clcf->absolute_redirect)
     {
         r->headers_out.location->hash = 0;
 
