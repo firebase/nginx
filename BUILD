@@ -1,4 +1,4 @@
-# Copyright (C) 2015-2016 Google Inc.
+# Copyright (C) 2015-2017 Google Inc.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -1468,5 +1468,5 @@ pkg_deb(
     preinst = "@nginx_pkgoss//:debian_preinst",
     prerm = "@nginx_pkgoss//:debian_prerm",
     section = "httpd",
-    version = "1.11.8",
+    version = "1.11.9",
 )
