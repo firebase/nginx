@@ -32,6 +32,7 @@ _common_copts = [
     "-Wlong-long",
     "-Wpointer-arith",
     "-Wshadow",
+    "-Wno-deprecated-declarations",
     "-Wno-unused-parameter",
 ]
 
@@ -81,9 +82,7 @@ cc_library(
     srcs = [
         "src/ngx_http_brotli_filter_module.c",
     ],
-    copts = nginx_copts + [
-        "-Wno-deprecated-declarations",
-    ],
+    copts = nginx_copts,
     defines = [
         "NGX_HTTP_BROTLI_FILTER",
     ],
