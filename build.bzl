@@ -590,10 +590,6 @@ cc_library(
     hdrs = [
         "zlib.h",
     ],
-    copts = [
-        "-Wno-shift-negative-value",
-        "-Wno-unknown-warning-option",
-    ],
     defines = [
         "Z_SOLO",
     ],
@@ -675,7 +671,7 @@ def nginx_repositories_zlib(bind):
     native.new_git_repository(
         name = "nginx_zlib",
         build_file_content = _ZLIB_BUILD_FILE,
-        commit = "50893291621658f355bc5b4d450a8d06a563053d",  # v1.2.8
+        commit = "cacf7f1d4e3d44d871b605da3b647f07d718623f",  # v1.2.11
         remote = "https://github.com/madler/zlib.git",
     )
 
