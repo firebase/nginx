@@ -1064,7 +1064,7 @@ ngx_http_v2_send_chain(ngx_connection_t *fc, ngx_chain_t *in, off_t limit)
             size -= rest;
         }
 
-        if (cl->buf->last_buf && r->trailers_ok) {
+        if (cl->buf->last_buf && r->allow_trailers && r->expect_trailers) {
             trailers = ngx_http_v2_create_trailers_frame(r);
             if (trailers) {
                 cl->buf->last_buf = 0;

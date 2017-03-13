@@ -1774,9 +1774,11 @@ ngx_http_process_te(ngx_http_request_t *r, ngx_table_elt_t *h,
     if (h->value.len == sizeof("trailers") - 1
         && ngx_memcmp(h->value.data, "trailers", sizeof("trailers") - 1) == 0)
     {
-        r->trailers_ok = 1;
+        r->allow_trailers = 1;
         return NGX_OK;
     }
+
+#if (NGX_HTTP_V2)
 
     if (r->http_version >= NGX_HTTP_VERSION_20) {
         ngx_log_error(NGX_LOG_INFO, r->connection->log, 0,
@@ -1786,6 +1788,8 @@ ngx_http_process_te(ngx_http_request_t *r, ngx_table_elt_t *h,
         ngx_http_finalize_request(r, NGX_HTTP_BAD_REQUEST);
         return NGX_ERROR;
     }
+
+#endif
 
     if (h->value.len < sizeof("trailers") - 1) {
         return NGX_OK;
@@ -1801,7 +1805,7 @@ ngx_http_process_te(ngx_http_request_t *r, ngx_table_elt_t *h,
         p += sizeof("trailers") - 1;
 
         if (p == h->value.data + h->value.len || *p == ',' || *p == ' ') {
-            r->trailers_ok = 1;
+            r->allow_trailers = 1;
             return NGX_OK;
         }
     }

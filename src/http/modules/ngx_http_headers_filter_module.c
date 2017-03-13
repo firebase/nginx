@@ -224,7 +224,7 @@ ngx_http_headers_filter(ngx_http_request_t *r)
         }
     }
 
-    if (conf->trailers && r->trailers_ok) {
+    if (conf->trailers && r->allow_trailers) {
         len = 0;
 
         h = conf->trailers->elts;
@@ -280,6 +280,8 @@ ngx_http_headers_filter(ngx_http_request_t *r)
         t->value.len = len;
         t->hash = ngx_hash(ngx_hash(ngx_hash(ngx_hash(ngx_hash(
                            ngx_hash('t', 'r'), 'a'), 'i'), 'l'), 'e'), 'r');
+
+        r->expect_trailers = 1;
     }
 
     return ngx_http_next_header_filter(r);

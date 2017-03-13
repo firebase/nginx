@@ -72,7 +72,9 @@ ngx_http_chunked_header_filter(ngx_http_request_t *r)
 
     clcf = ngx_http_get_module_loc_conf(r, ngx_http_core_module);
 
-    if (clcf->chunked_transfer_encoding && r->trailers_ok) {
+    if (clcf->chunked_transfer_encoding
+        && r->allow_trailers && r->expect_trailers)
+    {
         ngx_http_clear_content_length(r);
         r->chunked = 1;
 
@@ -205,7 +207,7 @@ ngx_http_chunked_body_filter(ngx_http_request_t *r, ngx_chain_t *in)
             b->pos += 2;
         }
 
-        if (r->trailers_ok) {
+        if (r->allow_trailers && r->expect_trailers) {
             tl->next = ngx_http_chunked_get_trailers(r);
 
             if (tl->next != NULL) {
