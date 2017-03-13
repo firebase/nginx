@@ -160,13 +160,14 @@ static ngx_http_output_header_filter_pt  ngx_http_next_header_filter;
 static ngx_int_t
 ngx_http_headers_filter(ngx_http_request_t *r)
 {
-    u_char                   *p, *data;
-    size_t                    len;
-    ngx_str_t                 value;
-    ngx_uint_t                i, safe_status;
-    ngx_table_elt_t          *t;
-    ngx_http_header_val_t    *h;
-    ngx_http_headers_conf_t  *conf;
+    u_char                    *p, *data;
+    size_t                     len;
+    ngx_str_t                  value;
+    ngx_uint_t                 i, safe_status;
+    ngx_table_elt_t           *t;
+    ngx_http_header_val_t     *h;
+    ngx_http_headers_conf_t   *conf;
+    ngx_http_core_loc_conf_t  *clcf;
 
     if (r != r->main) {
         return ngx_http_next_header_filter(r);
@@ -225,6 +226,24 @@ ngx_http_headers_filter(ngx_http_request_t *r)
     }
 
     if (conf->trailers && r->allow_trailers) {
+
+        if (r->http_version < NGX_HTTP_VERSION_20) {
+            if (r->header_only
+                || r->headers_out.status == NGX_HTTP_NOT_MODIFIED
+                || r->headers_out.status == NGX_HTTP_NO_CONTENT
+                || r->headers_out.status < NGX_HTTP_OK
+                || r->method == NGX_HTTP_HEAD)
+            {
+               return ngx_http_next_header_filter(r);
+            }
+
+            clcf = ngx_http_get_module_loc_conf(r, ngx_http_core_module);
+
+            if (!clcf->chunked_transfer_encoding) {
+                return ngx_http_next_header_filter(r);
+            }
+        }
+
         len = 0;
 
         h = conf->trailers->elts;
