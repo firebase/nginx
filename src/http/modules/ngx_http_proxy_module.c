@@ -2887,11 +2887,12 @@ ngx_http_proxy_create_loc_conf(ngx_conf_t *cf)
     conf->ssl_passwords = NGX_CONF_UNSET_PTR;
 #endif
 
-    /* "proxy_cyclic_temp_file" is disabled */
+    /* the hardcoded values */
     conf->upstream.cyclic_temp_file = 0;
+    conf->upstream.change_buffering = 1;
+    conf->upstream.pass_trailers = 0;
 
     conf->redirect = NGX_CONF_UNSET;
-    conf->upstream.change_buffering = 1;
 
     conf->cookie_domains = NGX_CONF_UNSET_PTR;
     conf->cookie_paths = NGX_CONF_UNSET_PTR;

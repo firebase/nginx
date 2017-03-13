@@ -186,6 +186,8 @@ typedef struct {
     ngx_array_t                     *hide_headers;
     ngx_array_t                     *pass_headers;
 
+    ngx_flag_t                       pass_trailers;
+
     ngx_http_upstream_local_t       *local;
 
 #if (NGX_HTTP_CACHE)
@@ -250,6 +252,7 @@ typedef struct {
 
 typedef struct {
     ngx_list_t                       headers;
+    ngx_list_t                       trailers;
 
     ngx_uint_t                       status_n;
     ngx_str_t                        status_line;

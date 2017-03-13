@@ -2785,10 +2785,10 @@ ngx_http_fastcgi_create_loc_conf(ngx_conf_t *cf)
 
     conf->upstream.intercept_errors = NGX_CONF_UNSET;
 
-    /* "fastcgi_cyclic_temp_file" is disabled */
+    /* the hardcoded values */
     conf->upstream.cyclic_temp_file = 0;
-
     conf->upstream.change_buffering = 1;
+    conf->upstream.pass_trailers = 0;
 
     conf->catch_stderr = NGX_CONF_UNSET_PTR;
 

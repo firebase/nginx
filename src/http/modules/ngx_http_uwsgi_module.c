@@ -1449,10 +1449,10 @@ ngx_http_uwsgi_create_loc_conf(ngx_conf_t *cf)
     conf->ssl_passwords = NGX_CONF_UNSET_PTR;
 #endif
 
-    /* "uwsgi_cyclic_temp_file" is disabled */
+    /* the hardcoded values */
     conf->upstream.cyclic_temp_file = 0;
-
     conf->upstream.change_buffering = 1;
+    conf->upstream.pass_trailers = 0;
 
     ngx_str_set(&conf->upstream.module, "uwsgi");
 
