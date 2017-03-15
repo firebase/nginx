@@ -1590,6 +1590,10 @@ ngx_http_v2_state_process_header(ngx_http_v2_connection_t *h2c, u_char *pos,
         rc = ngx_http_v2_pseudo_header(r, header);
 
         if (rc == NGX_OK) {
+            ngx_log_debug2(NGX_LOG_DEBUG_HTTP, r->connection->log, 0,
+                           "http2 http header: \":%V: %V\"",
+                           &header->name, &header->value);
+
             return ngx_http_v2_state_header_complete(h2c, pos, end);
         }
 
@@ -1965,6 +1969,9 @@ ngx_http_v2_state_settings(ngx_http_v2_connection_t *h2c, u_char *pos,
             return ngx_http_v2_connection_error(h2c, NGX_HTTP_V2_SIZE_ERROR);
         }
 
+        ngx_log_debug0(NGX_LOG_DEBUG_HTTP, h2c->connection->log, 0,
+                       "http2 SETTINGS frame ack:1");
+
         h2c->settings_ack = 1;
 
         return ngx_http_v2_state_complete(h2c, pos, end);
@@ -1977,6 +1984,9 @@ ngx_http_v2_state_settings(ngx_http_v2_connection_t *h2c, u_char *pos,
 
         return ngx_http_v2_connection_error(h2c, NGX_HTTP_V2_SIZE_ERROR);
     }
+
+    ngx_log_debug0(NGX_LOG_DEBUG_HTTP, h2c->connection->log, 0,
+                   "http2 SETTINGS frame ack:0");
 
     ngx_http_v2_send_settings(h2c, 1);
 
@@ -2093,11 +2103,15 @@ ngx_http_v2_state_ping(ngx_http_v2_connection_t *h2c, u_char *pos, u_char *end)
     }
 
     ngx_log_debug1(NGX_LOG_DEBUG_HTTP, h2c->connection->log, 0,
-                   "http2 PING frame, flags: %ud", h2c->state.flags);
+                   "http2 PING frame ack:%ud",
+                   h2c->state.flags & NGX_HTTP_V2_ACK_FLAG ? 1 : 0);
 
     if (h2c->state.flags & NGX_HTTP_V2_ACK_FLAG) {
         return ngx_http_v2_state_skip(h2c, pos, end);
     }
+
+    ngx_log_debug0(NGX_LOG_DEBUG_HTTP, h2c->connection->log, 0,
+                   "http2 send PING frame ack:1");
 
     frame = ngx_http_v2_get_frame(h2c, NGX_HTTP_V2_PING_SIZE,
                                   NGX_HTTP_V2_PING_FRAME,
