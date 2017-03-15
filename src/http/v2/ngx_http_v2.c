@@ -1921,6 +1921,11 @@ ngx_http_v2_state_rst_stream(ngx_http_v2_connection_t *h2c, u_char *pos,
 
     switch (status) {
 
+    case NGX_HTTP_V2_NO_ERROR:
+        ngx_log_error(NGX_LOG_INFO, fc->log, 0,
+                      "client closed stream %ui", h2c->state.sid);
+        break;
+
     case NGX_HTTP_V2_CANCEL:
         ngx_log_error(NGX_LOG_INFO, fc->log, 0,
                       "client canceled stream %ui", h2c->state.sid);
