@@ -40,6 +40,7 @@
 
 /* settings fields */
 #define NGX_HTTP_V2_HEADER_TABLE_SIZE_SETTING    0x1
+#define NGX_HTTP_V2_ENABLE_PUSH_SETTING          0x2
 #define NGX_HTTP_V2_MAX_STREAMS_SETTING          0x3
 #define NGX_HTTP_V2_INIT_WINDOW_SIZE_SETTING     0x4
 #define NGX_HTTP_V2_MAX_FRAME_SIZE_SETTING       0x5
@@ -1996,6 +1997,19 @@ ngx_http_v2_state_settings_params(ngx_http_v2_connection_t *h2c, u_char *pos,
         value = ngx_http_v2_parse_uint32(&pos[2]);
 
         switch (id) {
+
+        case NGX_HTTP_V2_ENABLE_PUSH_SETTING:
+
+            if (value != 0 && value != 1) {
+                ngx_log_error(NGX_LOG_INFO, h2c->connection->log, 0,
+                              "client sent SETTINGS frame with incorrect "
+                              "ENABLE_PUSH value %ui", value);
+
+                return ngx_http_v2_connection_error(h2c,
+                                                    NGX_HTTP_V2_PROTOCOL_ERROR);
+            }
+
+            break;
 
         case NGX_HTTP_V2_INIT_WINDOW_SIZE_SETTING:
 
