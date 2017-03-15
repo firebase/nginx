@@ -3556,7 +3556,9 @@ ngx_http_v2_read_request_body(ngx_http_request_t *r,
 
     stream = r->stream;
 
-    if (stream->skip_data) {
+    if (stream->skip_data
+        || (stream->in_closed && stream->preread == NULL))
+    {
         r->request_body_no_buffering = 0;
         post_handler(r);
         return NGX_OK;
