@@ -2971,6 +2971,7 @@ ngx_http_set_keepalive(ngx_http_request_t *r)
             }
 
             cl->buf = b;
+            cl->next = NULL;
 
             hc->busy = cl;
             hc->nbusy = 1;
