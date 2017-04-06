@@ -276,6 +276,12 @@ extern ngx_module_t  ngx_stream_upstream_zone_module;
 #if (NGX_STREAM_SSL_PREREAD)
 extern ngx_module_t  ngx_stream_ssl_preread_module;
 #endif
+#if (FIR_BILLING_MODULE)
+extern ngx_module_t  fir_billing_module;
+#endif
+#if (FIR_SHUTDOWN_MODULE)
+extern ngx_module_t  fir_shutdown_module;
+#endif
 
 #if 0
 extern ngx_module_t  ngx_google_perftools_module;
@@ -549,6 +555,12 @@ ngx_module_t *ngx_modules[] = {
 #endif
 #if (NGX_STREAM_SSL_PREREAD)
     &ngx_stream_ssl_preread_module,
+#endif
+#if (FIR_BILLING_MODULE)
+    &fir_billing_module,
+#endif
+#if (FIR_SHUTDOWN_MODULE)
+    &fir_shutdown_module,
 #endif
 
 #if 0
@@ -825,6 +837,12 @@ char *ngx_module_names[] = {
 #endif
 #if (NGX_STREAM_SSL_PREREAD)
     "ngx_stream_ssl_preread_module",
+#endif
+#if (FIR_BILLING_MODULE)
+    "fir_billing_module",
+#endif
+#if (FIR_SHUTDOWN_MODULE)
+    "fir_shutdown_module",
 #endif
 
 #if 0
