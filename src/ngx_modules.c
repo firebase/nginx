@@ -282,6 +282,9 @@ extern ngx_module_t  fir_billing_module;
 #if (FIR_SHUTDOWN_MODULE)
 extern ngx_module_t  fir_shutdown_module;
 #endif
+#if (FIR_HASHING_MODULE)
+extern ngx_module_t  fir_hashing_module;
+#endif
 
 #if 0
 extern ngx_module_t  ngx_google_perftools_module;
@@ -561,6 +564,9 @@ ngx_module_t *ngx_modules[] = {
 #endif
 #if (FIR_SHUTDOWN_MODULE)
     &fir_shutdown_module,
+#endif
+#if (FIR_HASHING_MODULE)
+    &fir_hashing_module,
 #endif
 
 #if 0
@@ -843,6 +849,9 @@ char *ngx_module_names[] = {
 #endif
 #if (FIR_SHUTDOWN_MODULE)
     "fir_shutdown_module",
+#endif
+#if (FIR_HASHING_MODULE)
+    "fir_hashing_module",
 #endif
 
 #if 0
