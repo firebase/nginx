@@ -276,6 +276,9 @@ extern ngx_module_t  ngx_stream_upstream_zone_module;
 #if (NGX_STREAM_SSL_PREREAD)
 extern ngx_module_t  ngx_stream_ssl_preread_module;
 #endif
+#if (NGX_HTTP_STATSD)
+extern ngx_module_t  ngx_http_statsd_module;
+#endif
 #if (FIR_BILLING_MODULE)
 extern ngx_module_t  fir_billing_module;
 #endif
@@ -555,6 +558,9 @@ ngx_module_t *ngx_modules[] = {
 #endif
 #if (NGX_STREAM_SSL_PREREAD)
     &ngx_stream_ssl_preread_module,
+#endif
+#if (NGX_HTTP_STATSD)
+    &ngx_http_statsd_module,
 #endif
 #if (FIR_BILLING_MODULE)
     &fir_billing_module,
@@ -837,6 +843,9 @@ char *ngx_module_names[] = {
 #endif
 #if (NGX_STREAM_SSL_PREREAD)
     "ngx_stream_ssl_preread_module",
+#endif
+#if (NGX_HTTP_STATSD)
+    "ngx_http_statsd_module",
 #endif
 #if (FIR_BILLING_MODULE)
     "fir_billing_module",
