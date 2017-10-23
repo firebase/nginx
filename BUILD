@@ -1423,7 +1423,7 @@ genrule(
 
 pkg_tar(
     name = "nginx-google-sbin",
-    files = [
+    srcs = [
         ":nginx",
     ],
     mode = "0755",
@@ -1434,7 +1434,7 @@ pkg_tar(
 pkg_tar(
     name = "nginx-google-data",
     extension = "tar.gz",
-    files = [
+    srcs = [
         "usr/share/doc/nginx-google/copyright",
     ],
     mode = "0644",
